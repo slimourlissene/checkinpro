@@ -77,3 +77,7 @@ h3 {
 * {
   font-family: var(--font-geist-sans) !important;
 }
+
+nav > div:first-child {
+  width: 70%;
+}
