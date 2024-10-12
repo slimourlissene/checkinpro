@@ -1,4 +1,3 @@
-"use client";
 import Link from "next/link";
 import {
   NavigationMenu,
@@ -9,11 +8,13 @@ import {
 } from "../ui/navigation-menu";
 import { NavbarItem } from "@/types";
 import { Key } from "react";
-import { useSession } from "next-auth/react";
 import { ToggleTheme } from "./toggleTheme";
+import Login from "../auth/login";
+import Logout from "../auth/logout";
+import { auth } from "@/app/auth";
 
-export default function Navbar() {
-  const { data: session } = useSession();
+export default async function Navbar() {
+  const session = await auth();
   const left: NavbarItem[] = [
     {
       label: "Accueil",
@@ -21,20 +22,14 @@ export default function Navbar() {
     },
     ...(session ? [{ label: "Mes émargements", href: "/checkins" }] : []),
   ];
-  console.log(left);
   const right: NavbarItem[] = [
-    {
-      label: "Se connecter",
-      href: "/login",
-    },
-    {
-      label: "Comment obtenir un compte ?",
-      href: "/register",
-    },
-    {
-      component: <ToggleTheme />,
-    },
-    ...(session ? [{ label: "Déconnexion", href: "/api/auth/signout" }] : []),
+    ...(session
+      ? [{ component: <Logout /> }]
+      : [
+          { component: <Login /> },
+          { label: "Comment obtenir un compte ?", href: "/register" },
+        ]),
+    { component: <ToggleTheme /> },
   ];
 
   return (
