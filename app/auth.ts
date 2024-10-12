@@ -2,13 +2,14 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { prisma } from "@/prisma";
-import { saltAndHashPasword } from "@/utils/password";
-import { UsersActions } from "@/services/users";
+import { getUserByEmail } from "@/services/users";
 import { users } from "@prisma/client";
-
-const usersActions = new UsersActions();
+import bcrypt from "bcrypt";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  session: {
+    strategy: "jwt",
+  },
   adapter: PrismaAdapter(prisma),
   providers: [
     Credentials({
@@ -17,20 +18,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: {},
       },
       authorize: async (credentials): Promise<users | null> => {
-        let user: users | null = null;
-        const hashedPassword = saltAndHashPasword({
-          password: credentials.password as string,
-        });
+        try {
+          let user: users | null = null;
+          user = await getUserByEmail({
+            email: credentials.email as string,
+          });
 
-        user = await usersActions.getUserByEmail({
-          email: credentials.email as string,
-        });
+          if (
+            !user ||
+            !bcrypt.compareSync(credentials.password as string, user.password)
+          ) {
+            throw new Error("User not found or password is incorrect");
+          }
 
-        if (!user || user.password !== hashedPassword) {
-          throw new Error("User not found or password is incorrect");
+          return user;
+        } catch (error) {
+          console.error(error);
+          return null;
         }
-
-        return user;
       },
     }),
   ],
