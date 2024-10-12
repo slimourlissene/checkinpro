@@ -13,6 +13,7 @@ import {
 import { Button } from "../ui/button";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function Logout() {
   const router = useRouter();
@@ -22,6 +23,7 @@ export default function Logout() {
       await signOut({
         redirect: false,
       });
+      toast.success("Vous avez été déconnecté avec succès.");
       router.refresh();
     } catch (error) {
       console.error(error);
