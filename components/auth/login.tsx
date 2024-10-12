@@ -23,6 +23,7 @@ import { z } from "zod";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function Login() {
   const [isOpen, setIsOpen] = useState(false);
@@ -70,6 +71,7 @@ function LoginForm({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
 
       if (result?.ok) {
         setIsOpen(false);
+        toast.success("Vous êtes désormais connecté.");
         router.refresh();
       }
     } catch (error) {
