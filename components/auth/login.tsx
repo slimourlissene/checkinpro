@@ -24,6 +24,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import LoadingSpinner from "../ui/loading-spinner";
 
 export default function Login() {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,6 +48,7 @@ export default function Login() {
 }
 
 function LoginForm({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const loginSchema = z.object({
     email: z.string().email(),
@@ -62,6 +64,7 @@ function LoginForm({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
   });
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
+    setIsLoading(true);
     try {
       const result = await signIn("credentials", {
         email: values.email,
@@ -69,13 +72,18 @@ function LoginForm({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
         redirect: false,
       });
 
-      if (result?.ok) {
+      if (!result?.error) {
         setIsOpen(false);
         toast.success("Vous êtes désormais connecté.");
         router.refresh();
+      } else {
+        throw new Error(result.error);
       }
     } catch (error) {
       console.error(error);
+      toast.error("Une erreur est survenue lors de la connexion.");
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -120,7 +128,9 @@ function LoginForm({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
           >
             Annuler
           </Button>
-          <Button type="submit">Se connecter</Button>
+          <Button className="w-[125px]" type="submit" disabled={isLoading}>
+            {isLoading ? <LoadingSpinner /> : "Se connecter"}
+          </Button>
         </div>
       </form>
     </Form>

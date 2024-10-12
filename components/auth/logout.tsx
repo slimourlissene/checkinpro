@@ -14,11 +14,15 @@ import { Button } from "../ui/button";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useState } from "react";
+import LoadingSpinner from "../ui/loading-spinner";
 
 export default function Logout() {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   async function handleLogout() {
+    setIsLoading(true);
     try {
       await signOut({
         redirect: false,
@@ -27,6 +31,9 @@ export default function Logout() {
       router.refresh();
     } catch (error) {
       console.error(error);
+      toast.error("Une erreur est survenue lors de la connexion.");
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -50,8 +57,12 @@ export default function Logout() {
             <Button variant={"outline"}>Annuler</Button>
           </AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Button variant={"destructive"} onClick={() => handleLogout()}>
-              Se déconnecter
+            <Button
+              className="w-[125px]"
+              variant={"destructive"}
+              onClick={() => handleLogout()}
+            >
+              {isLoading ? <LoadingSpinner /> : "Se déconnecter"}
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>

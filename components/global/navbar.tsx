@@ -24,7 +24,7 @@ export default async function Navbar() {
   ];
   const right: NavbarItem[] = [
     ...(session
-      ? [{ component: <Logout /> }]
+      ? [{ label: "Mon compte", href: "/account" }, { component: <Logout /> }]
       : [
           { component: <Login /> },
           { label: "Comment obtenir un compte ?", href: "/register" },
