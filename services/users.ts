@@ -1,10 +1,10 @@
 "use server";
 import { prisma } from "@/prisma";
-import { users } from "@prisma/client";
+import { User } from "@prisma/client";
 
-export async function getUsers(): Promise<users[] | null> {
+export async function getUsers(): Promise<User[] | null> {
   try {
-    return await prisma.users.findMany();
+    return await prisma.user.findMany();
   } catch (error) {
     console.error(error);
     return null;
@@ -15,9 +15,9 @@ export async function getUserByEmail({
   email,
 }: {
   email: string;
-}): Promise<users | null> {
+}): Promise<User | null> {
   try {
-    return await prisma.users.findUnique({
+    return await prisma.user.findFirst({
       where: { email },
     });
   } catch (error) {

@@ -1,10 +1,10 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import Resend from "next-auth/providers/resend";
+import Nodemailer from "next-auth/providers/nodemailer";
 import { prisma } from "@/prisma";
 import { getUserByEmail } from "@/services/users";
-import { users } from "@prisma/client";
+import { User } from "@prisma/client";
 import bcrypt from "bcrypt";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -13,16 +13,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   adapter: PrismaAdapter(prisma),
   providers: [
-    Resend,
+    Nodemailer({
+      server: process.env.EMAIL_SERVER,
+      from: process.env.EMAIL_FROM,
+    }),
     Credentials({
       credentials: {
         email: {},
         password: {},
       },
-      authorize: async (credentials): Promise<users | null> => {
+      authorize: async (credentials): Promise<User | null> => {
         try {
-          let user: users | null = null;
-          user = await getUserByEmail({
+          const user: User | null = await getUserByEmail({
             email: credentials.email as string,
           });
 
