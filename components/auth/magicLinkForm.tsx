@@ -1,11 +1,9 @@
 "use client";
-import { signIn } from "next-auth/react";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
@@ -14,8 +12,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { sendMagicLink } from "@/api/sendMagicLink";
 
-export default function MagicLinkButton() {
+export default function MagicLinkForm() {
   const magicLinkSchema = z.object({
     email: z.string().email(),
   });
@@ -29,10 +28,12 @@ export default function MagicLinkButton() {
 
   async function onSubmit(values: z.infer<typeof magicLinkSchema>) {
     try {
-      await signIn("resend", {
-        email: values.email,
-        redirectTo: "/",
-      });
+      const result = await sendMagicLink({ email: values.email });
+      if (result.ok) {
+        toast.success(
+          "Un lien de connexion a été envoyé à votre adresse email"
+        );
+      }
     } catch (error) {
       console.error(error);
       toast.error("Une erreur est survenue, veuillez réessayer plus tard");
@@ -42,7 +43,7 @@ export default function MagicLinkButton() {
   return (
     <Form {...magicLinkForm}>
       <form
-        className="flex flex-row gap-3 justify-center items-end"
+        className="flex flex-row gap-3 items-end"
         onSubmit={magicLinkForm.handleSubmit(onSubmit)}
       >
         <FormField
@@ -50,9 +51,9 @@ export default function MagicLinkButton() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input
+                  className="w-[250px]"
                   type="email"
                   placeholder="Entrez votre email"
                   {...field}

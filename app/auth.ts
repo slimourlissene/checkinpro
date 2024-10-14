@@ -43,4 +43,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    jwt({ token, user }: any) {
+      if (user) {
+        token.emailVerified = user.emailVerified;
+      }
+      return token;
+    },
+    session({ session, token }: any) {
+      session.user.emailVerified = token.emailVerified;
+      return session;
+    },
+  },
 });
