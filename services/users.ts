@@ -1,10 +1,11 @@
 "use server";
 import { prisma } from "@/prisma";
-import { users } from "@prisma/client";
+import { saltAndHashPasword } from "@/utils/password";
+import { User } from "@prisma/client";
 
-export async function getUsers(): Promise<users[] | null> {
+export async function getUsers(): Promise<User[] | null> {
   try {
-    return await prisma.users.findMany();
+    return await prisma.user.findMany();
   } catch (error) {
     console.error(error);
     return null;
@@ -15,10 +16,29 @@ export async function getUserByEmail({
   email,
 }: {
   email: string;
-}): Promise<users | null> {
+}): Promise<User | null> {
   try {
-    return await prisma.users.findUnique({
+    return await prisma.user.findFirst({
       where: { email },
+    });
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function resetPassword({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}): Promise<User | null> {
+  try {
+    const hashedPassword = await saltAndHashPasword({ password });
+    return await prisma.user.update({
+      where: { email },
+      data: { password: hashedPassword, isPasswordSet: true },
     });
   } catch (error) {
     console.error(error);
