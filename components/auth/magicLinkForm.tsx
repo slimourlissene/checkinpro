@@ -33,6 +33,7 @@ export default function MagicLinkForm() {
         toast.success(
           "Un lien de connexion a été envoyé à votre adresse email"
         );
+        magicLinkForm.reset();
       }
     } catch (error) {
       console.error(error);

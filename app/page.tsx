@@ -1,12 +1,15 @@
+import ResetPassword from "@/components/auth/resetPassword";
 import { auth } from "./auth";
 
 export default async function Home() {
-  const session = await auth();
+  const session: any = await auth();
   console.log(session);
 
   return (
     <section>
-      <div></div>
+      {session && !session?.user?.isPasswordSet && (
+        <ResetPassword email={session.user.email} />
+      )}
     </section>
   );
 }

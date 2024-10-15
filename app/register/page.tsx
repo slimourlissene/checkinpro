@@ -7,7 +7,7 @@ export default function Register() {
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
           Comment accéder à la plateforme ?
         </h1>
-        <div className="mt-3 w-[80%]">
+        <div className="mt-3">
           <p className="text-justify leading-6 [&:not(:first-child)]:mt-3">
             Pour garantir la sécurité et la confidentialité, la création de
             compte est uniquement gérée par les employeurs. Vous ne pouvez pas

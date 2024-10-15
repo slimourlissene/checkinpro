@@ -1,13 +1,5 @@
 "use client";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
   Form,
   FormControl,
   FormField,
@@ -23,49 +15,49 @@ import { z } from "zod";
 import { useState } from "react";
 import { toast } from "sonner";
 import LoadingSpinner from "../ui/loading-spinner";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "../ui/alert-dialog";
+import { resetPassword } from "@/services/users";
 
-const resetPasswordSchema = z
-  .object({
-    email: z.string().email({ message: "Votre adresse email est invalide." }),
+export default function ResetPassword({ email }: { email: string }) {
+  const [isOpen, setIsOpen] = useState(true);
+
+  return (
+    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+      <AlertDialogContent className="sm:max-w-[475px]">
+        <AlertDialogHeader className="space-y-0">
+          <AlertDialogTitle>Bienvenue sur CheckInPro !</AlertDialogTitle>
+          <AlertDialogDescription>
+            Définissez votre mot de passe pour accéder à la plateforme.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <ResetPasswordForm email={email} setIsOpen={setIsOpen} />
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+
+function ResetPasswordForm({
+  email,
+  setIsOpen,
+}: {
+  email: string;
+  setIsOpen: (isOpen: boolean) => void;
+}) {
+  const [isLoading, setIsLoading] = useState(false);
+  const resetPasswordSchema = z.object({
     newPassword: z.string().min(8, {
       message: "Votre mot de passe doit faire au minimum 8 caractères.",
     }),
     confirmPassword: z.string().min(8, {
       message: "Votre mot de passe doit faire au minimum 8 caractères.",
     }),
-  })
-  .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
   });
-
-export default function ResetPassword() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button variant="ghost">Réinitialiser le mot de passe</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[475px]">
-        <DialogHeader>
-          <DialogTitle>Réinitialiser le mot de passe</DialogTitle>
-          <DialogDescription>
-            Définissez un nouveau mot de passe pour votre compte.
-          </DialogDescription>
-        </DialogHeader>
-        <ResetPasswordForm setIsOpen={setIsOpen} />
-      </DialogContent>
-    </Dialog>
-  );
-}
-
-function ResetPasswordForm({
-  setIsOpen,
-}: {
-  setIsOpen: (isOpen: boolean) => void;
-}) {
-  const [isLoading, setIsLoading] = useState(false);
   const resetPasswordForm = useForm<z.infer<typeof resetPasswordSchema>>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
@@ -76,7 +68,15 @@ function ResetPasswordForm({
 
   async function onSubmit(values: z.infer<typeof resetPasswordSchema>) {
     setIsLoading(true);
+    const { newPassword, confirmPassword } = values;
     try {
+      if (newPassword !== confirmPassword) {
+        toast.error("Les mots de passe ne correspondent pas.");
+        return;
+      }
+      await resetPassword({ email, password: newPassword });
+      toast.success("Votre mot de passe a été défini avec succès.");
+      setIsOpen(false);
     } catch (error) {
       console.error(error);
       toast.error(
@@ -103,6 +103,7 @@ function ResetPasswordForm({
                 <Input
                   type="password"
                   placeholder="Nouveau mot de passe"
+                  required
                   {...field}
                 />
               </FormControl>
@@ -120,6 +121,7 @@ function ResetPasswordForm({
                 <Input
                   type="password"
                   placeholder="Confirmer le nouveau mot de passe"
+                  required
                   {...field}
                 />
               </FormControl>
@@ -128,14 +130,7 @@ function ResetPasswordForm({
           )}
         />
         <div className="w-full flex flex-row gap-4 justify-end">
-          <Button
-            type="button"
-            variant={"outline"}
-            onClick={() => setIsOpen(false)}
-          >
-            Annuler
-          </Button>
-          <Button className="w-[125px]" type="submit" disabled={isLoading}>
+          <Button type="submit">
             {isLoading ? <LoadingSpinner /> : "Envoyer"}
           </Button>
         </div>

@@ -30,7 +30,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           if (
             !user ||
-            !bcrypt.compareSync(credentials.password as string, user.password)
+            !bcrypt.compareSync(
+              credentials.password as string,
+              user.password as string
+            )
           ) {
             throw new Error("User not found or password is incorrect");
           }
@@ -44,14 +47,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    jwt({ token, user }: any) {
+    async jwt({ token }: any) {
+      const user = await prisma.user.findUnique({
+        where: { email: token.email },
+      });
       if (user) {
-        token.emailVerified = user.emailVerified;
+        token.isPasswordSet = user.isPasswordSet;
       }
       return token;
     },
-    session({ session, token }: any) {
-      session.user.emailVerified = token.emailVerified;
+    async session({ session, token }: any) {
+      session.user.isPasswordSet = token.isPasswordSet;
       return session;
     },
   },
