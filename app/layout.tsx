@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import Sidebar from "@/components/navigation/sidebar";
 import { auth } from "./auth";
+import { useTheme } from "next-themes";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

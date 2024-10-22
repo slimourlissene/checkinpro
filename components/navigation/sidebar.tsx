@@ -1,24 +1,18 @@
 "use client";
 
-import * as React from "react";
 import {
-  BookOpen,
-  Bot,
-  CircleHelp,
+  Building2,
   Command,
   Frame,
-  Home,
   LifeBuoy,
   Map,
   PieChart,
   Send,
-  Settings2,
-  SquareTerminal,
 } from "lucide-react";
 
 import { GeneralSidebar } from "./generalSidebar";
-import { ProjectsSidebar } from "./projectsSidebar";
-import { SecondarySidebar } from "./secondarySidebar";
+import { CheckInSidebar } from "./checkInSidebar";
+import { LegalSidebar } from "./legalSidebar";
 import { UserSidebar } from "./userSidebar";
 import {
   Sidebar,
@@ -31,28 +25,12 @@ import {
 } from "../ui/sidebar";
 import Link from "next/link";
 import { User } from "next-auth";
-
-function computeSidebarGeneralItems(user: User | undefined) {
-  const result = [
-    {
-      title: "Accueil",
-      url: "/",
-      icon: Home,
-      isActive: true,
-    },
-  ];
-
-  if (user === undefined) {
-    result.push({
-      title: "Comment s'inscrire",
-      url: "/register",
-      icon: CircleHelp,
-      isActive: false,
-    });
-  }
-
-  return result;
-}
+import {
+  computeSidebarCheckInItems,
+  computeSidebarGeneralItems,
+  computeSidebarLegalItems,
+} from "@/utils/navigation";
+import { ISidebarItem } from "@/types";
 
 const data = {
   user: {
@@ -60,65 +38,17 @@ const data = {
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  navMain: [
-    {
-      title: "Accueil",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-    },
-    {
-      title: "Comment s'inscrire",
-      url: "#",
-      icon: Bot,
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-    },
-  ],
-  navSecondary: [
-    {
-      title: "Support",
-      url: "#",
-      icon: LifeBuoy,
-    },
-    {
-      title: "Feedback",
-      url: "#",
-      icon: Send,
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
 };
 
-export default async function AppSidebar({
+export default function AppSidebar({
   user,
   ...props
 }: { user: User | undefined } & React.ComponentProps<typeof Sidebar>) {
-  const navMainItems = computeSidebarGeneralItems(user);
+  const navMainItems: ISidebarItem[] = computeSidebarGeneralItems({ user });
+  const navCheckInItems: ISidebarItem[] = user
+    ? computeSidebarCheckInItems()
+    : [];
+  const navLegalItems: ISidebarItem[] = computeSidebarLegalItems();
 
   return (
     <Sidebar variant="inset" {...props}>
@@ -128,7 +58,7 @@ export default async function AppSidebar({
             <SidebarMenuButton size="lg" asChild>
               <Link href="#">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <Command className="size-4" />
+                  <Building2 className="size-5" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">L'USINE</span>
@@ -140,12 +70,10 @@ export default async function AppSidebar({
       </SidebarHeader>
       <SidebarContent>
         <GeneralSidebar items={navMainItems} />
-        <ProjectsSidebar projects={data.projects} />
-        <SecondarySidebar items={data.navSecondary} className="mt-auto" />
+        {user && <CheckInSidebar items={navCheckInItems} />}
+        <LegalSidebar items={navLegalItems} />
       </SidebarContent>
-      <SidebarFooter>
-        <UserSidebar user={data.user} />
-      </SidebarFooter>
+      <SidebarFooter>{user && <UserSidebar user={user} />}</SidebarFooter>
     </Sidebar>
   );
 }

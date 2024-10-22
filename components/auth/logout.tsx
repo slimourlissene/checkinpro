@@ -15,7 +15,9 @@ import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useState } from "react";
+import { LogOut } from "lucide-react";
 import LoadingSpinner from "../ui/loading-spinner";
+import { DropdownMenuItem } from "../ui/dropdown-menu";
 
 export default function Logout() {
   const [isLoading, setIsLoading] = useState(false);
@@ -30,8 +32,8 @@ export default function Logout() {
       toast.success("Vous avez été déconnecté avec succès.");
       router.refresh();
     } catch (error) {
-      console.error(error);
       toast.error("Une erreur est survenue lors de la connexion.");
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -40,7 +42,14 @@ export default function Logout() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant={"ghost"}>Se déconnecter</Button>
+        <Button
+          size={"sm"}
+          className="w-full py-1.5 px-2 justify-start font-normal text-sm"
+          variant={"ghost"}
+        >
+          <LogOut size={21} className="mr-2" />
+          Se déconnecter
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

@@ -25,6 +25,8 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import LoadingSpinner from "../ui/loading-spinner";
+import { Key } from "lucide-react";
+import { SidebarMenuButton } from "../ui/sidebar";
 
 export default function Login() {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,7 +34,10 @@ export default function Login() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost">Se connecter</Button>
+        <SidebarMenuButton>
+          <Key />
+          <span>Se connecter</span>
+        </SidebarMenuButton>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[475px]">
         <DialogHeader>

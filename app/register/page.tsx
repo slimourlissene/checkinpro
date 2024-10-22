@@ -2,13 +2,13 @@ import MagicLinkForm from "@/components/auth/magicLinkForm";
 
 export default function Register() {
   return (
-    <div className="flex flex-row p-4 space-y-4 w-full">
+    <div className="flex flex-row p-4 justify-center space-y-4 w-full ">
       <div className="flex flex-col">
-        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-6xl">
           Comment accéder à la plateforme ?
         </h1>
         <div className="mt-3">
-          <p className="text-justify lg:max-w-3xl text-muted-foreground leading-6 [&:not(:first-child)]:mt-3">
+          <p className="text-justify text-muted-foreground leading-6 [&:not(:first-child)]:mt-3">
             Pour garantir la sécurité et la confidentialité, la création de
             compte est uniquement gérée par les employeurs. Vous ne pouvez pas
             vous inscrire directement ici. Si vous êtes employé et que votre
