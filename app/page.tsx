@@ -3,7 +3,6 @@ import { auth } from "./auth";
 
 export default async function Home() {
   const session: any = await auth();
-  console.log(session);
 
   return (
     <section>
