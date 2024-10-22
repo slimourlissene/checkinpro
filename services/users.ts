@@ -1,6 +1,6 @@
 "use server";
 import { prisma } from "@/prisma";
-import { saltAndHashPasword } from "@/utils/password";
+import { saltAndHashPasword } from "@/utils/user/password";
 import { User } from "@prisma/client";
 
 export async function getUsers(): Promise<User[] | null> {
