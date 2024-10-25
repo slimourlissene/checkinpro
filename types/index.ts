@@ -4,3 +4,9 @@ export interface ISidebarItem {
   icon?: React.ComponentType;
   component?: React.ReactNode;
 }
+
+export interface IPartialUser {
+  email: string;
+  firstname: string;
+  lastname: string;
+}

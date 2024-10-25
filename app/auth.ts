@@ -52,12 +52,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         where: { email: token.email },
       });
       if (user) {
+        token.id = user.id;
         token.isPasswordSet = user.isPasswordSet;
       }
       return token;
     },
     async session({ session, token }: any) {
       session.user.isPasswordSet = token.isPasswordSet;
+      session.user.id = token.id;
       return session;
     },
   },
