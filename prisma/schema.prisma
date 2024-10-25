@@ -28,9 +28,11 @@ model Account {
 }
 
 model Company {
-  id String @id @default(cuid())
-  name String
-  users User[]
+  id        String   @id @default(cuid())
+  name      String
+  users     User[]
+  ownerId   String?  @unique @map("owner_id")
+  owner     User?    @relation("CompanyOwner", fields: [ownerId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -58,6 +60,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   companyId     String?   @map("company_id")
+  ownedCompany  Company?  @relation("CompanyOwner")
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
