@@ -6,7 +6,7 @@ import { User } from "@prisma/client";
 export async function getUsers(): Promise<User[] | null> {
   try {
     return await prisma.user.findMany();
-  } catch (error) {
+  } catch (error: unknown) {
     console.error(error);
     return null;
   }
@@ -21,7 +21,7 @@ export async function getUserByEmail({
     return await prisma.user.findFirst({
       where: { email },
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error(error);
     return null;
   }
@@ -40,7 +40,7 @@ export async function resetPassword({
       where: { email },
       data: { password: hashedPassword, isPasswordSet: true },
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error(error);
     return null;
   }
