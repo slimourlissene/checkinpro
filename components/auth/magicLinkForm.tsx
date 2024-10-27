@@ -13,8 +13,11 @@ import { toast } from "sonner";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { sendMagicLink } from "@/api/sendMagicLink";
+import { useState } from "react";
+import LoadingSpinner from "../ui/loading-spinner";
 
 export default function MagicLinkForm() {
+  const [loading, setLoading] = useState<boolean>(false);
   const magicLinkSchema = z.object({
     email: z.string().email(),
   });
@@ -27,6 +30,7 @@ export default function MagicLinkForm() {
   });
 
   async function onSubmit(values: z.infer<typeof magicLinkSchema>) {
+    setLoading(true);
     try {
       const result = await sendMagicLink({ email: values.email });
       if (result.ok) {
@@ -38,6 +42,8 @@ export default function MagicLinkForm() {
     } catch (error) {
       console.error(error);
       toast.error("Une erreur est survenue, veuillez réessayer plus tard");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -64,7 +70,9 @@ export default function MagicLinkForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Envoyer</Button>
+        <Button className="w-[125px]" type="submit">
+          {loading ? <LoadingSpinner /> : "Envoyer le lien"}
+        </Button>
       </form>
     </Form>
   );

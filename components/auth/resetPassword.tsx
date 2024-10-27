@@ -22,7 +22,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "../ui/alert-dialog";
-import { resetPassword } from "@/services/users";
+import { resetPassword } from "@/services/user";
 
 export default function ResetPassword({ email }: { email: string }) {
   const [isOpen, setIsOpen] = useState(true);

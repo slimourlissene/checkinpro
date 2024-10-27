@@ -7,6 +7,8 @@ import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import Sidebar from "@/components/navigation/sidebar";
 import { auth } from "./auth";
 import { useTheme } from "next-themes";
+import { IUser } from "@/types";
+import { getCompanyById } from "@/services/company";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,7 +34,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
-  console.log(session);
 
   return (
     <html lang="fr" suppressHydrationWarning>
@@ -40,7 +41,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable}`}
       >
         <Providers>
-          <Sidebar user={session?.user} />
+          <Sidebar user={session?.user as IUser} />
           <SidebarInset>
             <header className="flex h-16 shrink-0 items-center gap-2">
               <div className="flex items-center gap-2 px-4">

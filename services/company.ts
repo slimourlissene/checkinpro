@@ -1,11 +1,11 @@
 "use server";
 import { auth } from "@/app/auth";
+import { User } from "@prisma/client";
 import { prisma } from "@/prisma";
 import { IPartialUser } from "@/types";
-import { isCompanyOwnedByUser } from "@/utils/companies/isCompanyOwnedByUser";
-import { isUserInCompany } from "@/utils/companies/isUserInCompany";
-import { validateCompanyAndUser } from "@/utils/companies/validateCompanyAndUser";
-import { User } from "@prisma/client";
+import { isCompanyOwnedByUser } from "@/utils/company/isCompanyOwnedByUser";
+import { isUserInCompany } from "@/utils/company/isUserInCompany";
+import { validateCompanyAndUser } from "@/utils/company/validateCompanyAndUser";
 
 export async function getCompanyById({ id }: { id: string }) {
   try {
@@ -32,7 +32,7 @@ export async function createCompany({ name }: { name: string }) {
   try {
     const session = await auth();
 
-    if (!session) {
+    if (session?.user === undefined) {
       throw new Error(`User not authenticated`);
     }
 
@@ -41,16 +41,22 @@ export async function createCompany({ name }: { name: string }) {
       where: { email },
     });
 
-    if (!owner) {
+    if (owner === null) {
       throw new Error(`User not found, email provided : ${email}`);
     }
 
-    return await prisma.company.create({
+    const company = await prisma.company.create({
       data: {
         name,
         ownerId: owner.id,
+        users: {
+          connect: {
+            id: owner.id,
+          },
+        },
       },
     });
+    return company;
   } catch (error: unknown) {
     console.error(error);
     throw new Error(`Failed to create company`, {
@@ -114,6 +120,10 @@ export async function deleteUserFromCompany({
   email: string;
 }) {
   try {
+    const session = await auth();
+    if (session?.user === undefined) {
+      throw new Error(`User not authenticated`);
+    }
     const company = await prisma.company.findUnique({
       where: { id },
       include: {
@@ -122,7 +132,7 @@ export async function deleteUserFromCompany({
     });
 
     isCompanyOwnedByUser({ companyOwnerId: company?.ownerId });
-    validateCompanyAndUser(company, email, id);
+    validateCompanyAndUser({ company, email, userId: session.user.id });
 
     return await prisma.company.update({
       where: { id },
