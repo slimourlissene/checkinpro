@@ -1,21 +1,48 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
-import { User } from "@prisma/client";
-import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { User } from "@prisma/client";
+import { ColumnDef } from "@tanstack/react-table";
+import { MoreHorizontal } from "lucide-react";
 
 export const columns: ColumnDef<User>[] = [
   {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Tout sélectionner"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Sélectionner une ligne"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
     accessorKey: "firstname",
-    header: "Prénom",
+    header: () => <span className="max-sm:hidden">Prénom</span>,
+    cell: ({ row }) => {
+      return (
+        <span className="max-sm:hidden"> {row.getValue("firstname")} </span>
+      );
+    },
   },
   {
     accessorKey: "lastname",
@@ -25,6 +52,7 @@ export const columns: ColumnDef<User>[] = [
     accessorKey: "email",
     header: "Email",
   },
+
   {
     id: "actions",
     header: "Actions",
@@ -36,7 +64,7 @@ export const columns: ColumnDef<User>[] = [
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent className="*:cursor-pointer" align="start">
             <DropdownMenuItem>Modifier</DropdownMenuItem>
             <DropdownMenuItem>Supprimer</DropdownMenuItem>
           </DropdownMenuContent>
