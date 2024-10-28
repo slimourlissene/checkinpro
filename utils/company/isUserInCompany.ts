@@ -8,7 +8,7 @@ export async function isUserInCompany({
 }) {
   const session = await auth();
 
-  if (!session) {
+  if (session?.user === undefined) {
     throw new Error(`User not authenticated`);
   }
 

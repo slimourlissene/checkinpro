@@ -1,11 +1,27 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import NextAuth from "next-auth";
+import NextAuth, { DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Nodemailer from "next-auth/providers/nodemailer";
 import { prisma } from "@/prisma";
-import { getUserByEmail } from "@/services/users";
+import { getUserByEmail } from "@/services/user";
 import { User } from "@prisma/client";
 import bcrypt from "bcrypt";
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      email: string;
+      isPasswordSet: boolean;
+      isChief: boolean;
+      company: {
+        id: string;
+        name: string;
+        users: User[];
+      };
+    };
+  }
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
@@ -50,16 +66,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token }: any) {
       const user = await prisma.user.findUnique({
         where: { email: token.email },
+        include: { company: true },
       });
       if (user) {
-        token.id = user.id;
-        token.isPasswordSet = user.isPasswordSet;
+        const { id, company, isPasswordSet, isChief } = user;
+        Object.assign(token, {
+          id,
+          isPasswordSet,
+          isChief,
+          company,
+        });
       }
       return token;
     },
     async session({ session, token }: any) {
-      session.user.isPasswordSet = token.isPasswordSet;
-      session.user.id = token.id;
+      const { id, company, isPasswordSet, isChief } = token;
+      Object.assign(session.user, {
+        id,
+        isPasswordSet,
+        isChief,
+        company,
+      });
       return session;
     },
   },
