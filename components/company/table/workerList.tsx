@@ -15,11 +15,12 @@ import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { Search } from "lucide-react";
-import * as React from "react";
 import AddWorker from "./addWorker";
+import { useState } from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -27,27 +28,32 @@ interface DataTableProps<TData, TValue> {
 }
 
 export default function WorkerList<TData, TValue>({
+  id,
   columns,
   data,
-}: DataTableProps<TData, TValue>) {
-  const [globalFilter, setGlobalFilter] = React.useState("");
+}: { id: string } & DataTableProps<TData, TValue>) {
+  const [globalFilter, setGlobalFilter] = useState("");
+  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
 
   const table = useReactTable({
     data,
     columns,
     state: {
       globalFilter,
+      pagination,
     },
     onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
   });
 
   return (
     <div>
       <div className="flex flex-row justify-between">
         <SearchEmail table={table} />
-        <AddWorker />
+        <AddWorker id={id} />
       </div>
       <div className="rounded-md border">
         <Table>
@@ -137,7 +143,7 @@ function SearchEmail<TData>({
       <Input
         className="max-w-xs"
         icon={<Search size={16} />}
-        placeholder="Rechercher un email"
+        placeholder="Rechercher"
         value={table.getState().globalFilter ?? ""}
         onChange={(e) => table.setGlobalFilter(e.target.value)}
       />

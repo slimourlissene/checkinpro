@@ -10,7 +10,7 @@ export default async function Company() {
 
   return (
     <div className="p-4 w-full">
-      <WorkerList columns={columns} data={company.users} />
+      <WorkerList id={company.id} columns={columns} data={company.users} />
     </div>
   );
 }

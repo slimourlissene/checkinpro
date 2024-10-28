@@ -76,13 +76,10 @@ export async function addUsersToCompany({
     const company = await prisma.company.findUnique({
       where: { id },
     });
-
     isCompanyOwnedByUser({ companyOwnerId: company?.ownerId });
-
     if (!company) {
       throw new Error(`Company not found, id provided : ${id}`);
     }
-
     /* 
       We use connectOrCreate to save a huge amount of lines & logic, 
       we can connect the user if it already exists in the database,
@@ -98,7 +95,6 @@ export async function addUsersToCompany({
               email: user.email,
               firstname: user.firstname,
               lastname: user.lastname,
-              companyId: company.id,
             },
           })),
         },
