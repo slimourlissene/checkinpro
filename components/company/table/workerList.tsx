@@ -19,8 +19,9 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { Search } from "lucide-react";
-import AddWorker from "./addWorker";
 import { useState } from "react";
+import AddWorker from "./addWorker";
+import DeleteWorker from "./deleteWorker";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -53,7 +54,15 @@ export default function WorkerList<TData, TValue>({
     <div>
       <div className="flex flex-row justify-between">
         <SearchEmail table={table} />
-        <AddWorker id={id} />
+        <div className="flex flex-row gap-3 items-center">
+          <DeleteWorker
+            isDropdownButton={false}
+            emails={table
+              .getFilteredSelectedRowModel()
+              .rows.map((row: any) => row.original.email)}
+          />
+          <AddWorker id={id} />
+        </div>
       </div>
       <div className="rounded-md border">
         <Table>

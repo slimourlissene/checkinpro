@@ -10,14 +10,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "../ui/button";
+import { LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { useState } from "react";
-import { LogOut } from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "../ui/button";
 import LoadingSpinner from "../ui/loading-spinner";
-import { DropdownMenuItem } from "../ui/dropdown-menu";
 
 export default function Logout() {
   const [isLoading, setIsLoading] = useState(false);
@@ -44,7 +43,7 @@ export default function Logout() {
       <AlertDialogTrigger asChild>
         <Button
           size={"sm"}
-          className="w-full py-1.5 px-2 justify-start font-normal text-sm"
+          className="w-full rounded-sm py-1.5 px-2 justify-start font-normal text-sm"
           variant={"ghost"}
         >
           <LogOut size={21} className="mr-2" />
