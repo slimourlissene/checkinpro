@@ -18,10 +18,12 @@ export default function DeleteWorker({
   emails,
   isDropdownButton,
   setDropdownOpen,
+  deselectAllRows,
 }: {
   emails: string[];
   isDropdownButton: boolean;
   setDropdownOpen?: (open: boolean) => void;
+  deselectAllRows?: () => void;
 }) {
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
@@ -61,9 +63,10 @@ export default function DeleteWorker({
           <Button
             className="w-[100px]"
             onClick={() =>
-              onClick({ emails, router, setOpen, setLoading }).then(
-                () => setDropdownOpen && setDropdownOpen(false)
-              )
+              onClick({ emails, router, setOpen, setLoading }).then(() => {
+                setDropdownOpen && setDropdownOpen(false);
+                deselectAllRows && deselectAllRows();
+              })
             }
             variant="destructive"
           >

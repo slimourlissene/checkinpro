@@ -60,7 +60,7 @@ function LoginForm({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
     password: z.string().min(8),
   });
 
-  const loginForm = useForm<z.infer<typeof loginSchema>>({
+  const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
@@ -93,10 +93,10 @@ function LoginForm({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
   }
 
   return (
-    <Form {...loginForm}>
-      <form onSubmit={loginForm.handleSubmit(onSubmit)} className="space-y-6">
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
-          control={loginForm.control}
+          control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
@@ -113,7 +113,7 @@ function LoginForm({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
           )}
         />
         <FormField
-          control={loginForm.control}
+          control={form.control}
           name="password"
           render={({ field }) => (
             <FormItem>

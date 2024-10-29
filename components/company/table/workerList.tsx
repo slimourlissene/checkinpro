@@ -16,51 +16,75 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
+  Row,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 import { Search } from "lucide-react";
 import { useState } from "react";
 import AddWorker from "./addWorker";
 import DeleteWorker from "./deleteWorker";
+import { User } from "next-auth";
 
-interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData extends User, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export default function WorkerList<TData, TValue>({
+export default function WorkerList<TData extends User, TValue>({
   id,
   columns,
   data,
 }: { id: string } & DataTableProps<TData, TValue>) {
   const [globalFilter, setGlobalFilter] = useState("");
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: "email", desc: false },
+  ]);
 
   const table = useReactTable({
     data,
     columns,
     state: {
+      sorting,
       globalFilter,
       pagination,
     },
+    onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
   });
 
+  function deselectAllRows() {
+    table.toggleAllRowsSelected(false);
+  }
+
   return (
     <div>
       <div className="flex flex-row justify-between">
         <SearchEmail table={table} />
-        <div className="flex flex-row gap-3 items-center">
-          <DeleteWorker
-            isDropdownButton={false}
-            emails={table
-              .getFilteredSelectedRowModel()
-              .rows.map((row: any) => row.original.email)}
-          />
+        <div className="flex flex-row gap-3 items-center mb-2">
+          <div
+            className={`transition-opacity duration-150 ${
+              table.getSelectedRowModel().rows.length > 0
+                ? "opacity-100"
+                : "opacity-0 pointer-events-none"
+            }`}
+          >
+            <DeleteWorker
+              isDropdownButton={false}
+              emails={table
+                .getFilteredSelectedRowModel()
+                .rows.map((row: Row<TData>) => row.original.email)
+                .filter((email) => email !== undefined && email !== null)}
+              deselectAllRows={deselectAllRows}
+            />
+          </div>
           <AddWorker id={id} />
         </div>
       </div>

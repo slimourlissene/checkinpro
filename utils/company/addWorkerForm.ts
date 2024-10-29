@@ -30,13 +30,15 @@ async function onSubmit({
   try {
     await addUsersToCompany({ id: id, users: values.workers });
     toast.success("Les employés ont été ajoutés avec succès.");
-    setOpen(false);
     router.refresh();
   } catch (error: unknown) {
     console.error(error);
-    toast.error("Une erreur s'est produite lors de l'ajout des employés.");
+    toast.error(
+      "Une erreur s'est produite lors de la modification de l'employé."
+    );
   } finally {
     setLoading(false);
+    setOpen(false);
   }
 }
 export { addWorkerSchema, onSubmit };

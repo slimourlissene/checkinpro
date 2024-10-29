@@ -123,10 +123,9 @@ export async function deleteUsersFromCompany({ emails }: { emails: string[] }) {
     });
 
     isCompanyOwnedByUser({ companyOwnerId: company?.ownerId });
-    console.log(emails);
     for (const email of emails) {
       validateCompanyAndUser({ company, email });
-      return await prisma.company.update({
+      await prisma.company.update({
         where: { id },
         data: {
           users: {
@@ -137,6 +136,7 @@ export async function deleteUsersFromCompany({ emails }: { emails: string[] }) {
         },
       });
     }
+    return company;
   } catch (error: unknown) {
     console.error(error);
     throw new Error(`Failed to delete user from company`, {
