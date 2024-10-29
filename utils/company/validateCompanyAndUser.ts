@@ -1,11 +1,9 @@
 import { Company, User } from "@prisma/client";
 
 export function validateCompanyAndUser({
-  userId,
   company,
   email,
 }: {
-  userId: string | undefined;
   company: (Company & { users: User[] }) | null;
   email: string;
 }) {
@@ -13,7 +11,8 @@ export function validateCompanyAndUser({
     throw new Error(`Company not found`);
   }
 
-  if (company.ownerId === userId) {
+  const userToDelete = company.users.find((user: User) => user.email === email);
+  if (company.ownerId === userToDelete?.id) {
     throw new Error(`Cannot delete owner from company`);
   }
 

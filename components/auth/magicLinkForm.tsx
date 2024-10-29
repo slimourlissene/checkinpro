@@ -22,7 +22,7 @@ export default function MagicLinkForm() {
     email: z.string().email(),
   });
 
-  const magicLinkForm = useForm<z.infer<typeof magicLinkSchema>>({
+  const form = useForm<z.infer<typeof magicLinkSchema>>({
     resolver: zodResolver(magicLinkSchema),
     defaultValues: {
       email: "",
@@ -37,7 +37,7 @@ export default function MagicLinkForm() {
         toast.success(
           "Un lien de connexion a été envoyé à votre adresse email"
         );
-        magicLinkForm.reset();
+        form.reset();
       }
     } catch (error) {
       console.error(error);
@@ -48,13 +48,13 @@ export default function MagicLinkForm() {
   }
 
   return (
-    <Form {...magicLinkForm}>
+    <Form {...form}>
       <form
         className="flex flex-row gap-3 items-end"
-        onSubmit={magicLinkForm.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField
-          control={magicLinkForm.control}
+          control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>

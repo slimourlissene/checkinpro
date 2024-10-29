@@ -11,6 +11,9 @@ import {
 import { User } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
+import { useState } from "react";
+import DeleteWorker from "./deleteWorker";
+import ModifyWorker from "./modifyWorker";
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -36,6 +39,7 @@ export const columns: ColumnDef<User>[] = [
     enableHiding: false,
   },
   {
+    id: "firstname",
     accessorKey: "firstname",
     header: () => <span className="max-sm:hidden">Prénom</span>,
     cell: ({ row }) => {
@@ -49,6 +53,7 @@ export const columns: ColumnDef<User>[] = [
     header: "Nom",
   },
   {
+    id: "email",
     accessorKey: "email",
     header: "Email",
   },
@@ -56,17 +61,25 @@ export const columns: ColumnDef<User>[] = [
   {
     id: "actions",
     header: "Actions",
-    cell: () => {
+    cell: ({ row }) => {
+      const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
       return (
-        <DropdownMenu>
+        <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
           <DropdownMenuTrigger asChild>
             <Button variant={"ghost"} className="h-8 w-8 p-0">
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="*:cursor-pointer" align="start">
-            <DropdownMenuItem>Modifier</DropdownMenuItem>
-            <DropdownMenuItem>Supprimer</DropdownMenuItem>
+            <ModifyWorker
+              user={row.original}
+              setDropdownOpen={setDropdownOpen}
+            />
+            <DeleteWorker
+              emails={[row.getValue("email")]}
+              isDropdownButton={true}
+              setDropdownOpen={setDropdownOpen}
+            />
           </DropdownMenuContent>
         </DropdownMenu>
       );

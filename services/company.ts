@@ -1,11 +1,11 @@
 "use server";
 import { auth } from "@/app/auth";
-import { User } from "@prisma/client";
 import { prisma } from "@/prisma";
 import { IPartialUser } from "@/types";
 import { isCompanyOwnedByUser } from "@/utils/company/isCompanyOwnedByUser";
 import { isUserInCompany } from "@/utils/company/isUserInCompany";
 import { validateCompanyAndUser } from "@/utils/company/validateCompanyAndUser";
+import { User } from "@prisma/client";
 
 export async function getCompanyById({ id }: { id: string }) {
   try {
@@ -108,18 +108,13 @@ export async function addUsersToCompany({
   }
 }
 
-export async function deleteUserFromCompany({
-  id,
-  email,
-}: {
-  id: string;
-  email: string;
-}) {
+export async function deleteUsersFromCompany({ emails }: { emails: string[] }) {
   try {
     const session = await auth();
     if (session?.user === undefined) {
       throw new Error(`User not authenticated`);
     }
+    const id = session.user.company.id;
     const company = await prisma.company.findUnique({
       where: { id },
       include: {
@@ -128,18 +123,20 @@ export async function deleteUserFromCompany({
     });
 
     isCompanyOwnedByUser({ companyOwnerId: company?.ownerId });
-    validateCompanyAndUser({ company, email, userId: session.user.id });
-
-    return await prisma.company.update({
-      where: { id },
-      data: {
-        users: {
-          delete: {
-            email,
+    for (const email of emails) {
+      validateCompanyAndUser({ company, email });
+      await prisma.company.update({
+        where: { id },
+        data: {
+          users: {
+            delete: {
+              email,
+            },
           },
         },
-      },
-    });
+      });
+    }
+    return company;
   } catch (error: unknown) {
     console.error(error);
     throw new Error(`Failed to delete user from company`, {

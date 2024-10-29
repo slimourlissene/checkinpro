@@ -9,7 +9,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Form } from "@/components/ui/form";
+import {
+  Form,
+  FormField,
+  FormControl,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -88,22 +95,53 @@ function AddWorkerForm({
           <div className="space-y-2 p-4">
             {fields.map((field, index) => (
               <div key={field.id} className="flex flex-row items-center gap-3">
-                <Input
-                  required
-                  placeholder="Prénom"
-                  {...form.register(`workers.${index}.firstname`)}
+                <FormField
+                  control={form.control}
+                  name={`workers.${index}.email`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          required
+                          type="text"
+                          placeholder="Prénom"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                <Input
-                  required
-                  placeholder="Nom"
-                  {...form.register(`workers.${index}.lastname`)}
+                <FormField
+                  control={form.control}
+                  name={`workers.${index}.email`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          required
+                          type="text"
+                          placeholder="Nom"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                <Input
-                  required
-                  placeholder="Email"
-                  {...form.register(`workers.${index}.email`)}
+                <FormField
+                  control={form.control}
+                  name={`workers.${index}.email`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input type="email" placeholder="Email" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                <div className={`flex flex-row gap-3 w-[60px]`}>
+                <div className={`flex flex-row gap-3 w-[60px] items-center`}>
                   {fields.length > 1 && (
                     <MinusCircle
                       className="cursor-pointer hover:text-muted-foreground transition-colors"
