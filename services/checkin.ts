@@ -74,13 +74,20 @@ export async function getCheckinById({
   }
 }
 
-export async function createCheckin({ companyId }: { companyId: string }) {
+export async function createCheckin({
+  name,
+  activeDays,
+}: {
+  name: string;
+  activeDays: string[];
+}) {
   try {
     const session = await auth();
     if (session?.user === undefined) throw new Error(`User not authenticated`);
+    const companyId = session.user.company.id;
     const company = await prisma.company.findUnique({
       where: {
-        id: companyId,
+        id: session.user.company.id,
       },
       include: {
         users: true,
@@ -92,6 +99,8 @@ export async function createCheckin({ companyId }: { companyId: string }) {
     isCompanyOwnedByUser({ companyOwnerId: company.ownerId });
     return await prisma.checkin.create({
       data: {
+        name,
+        activeDays,
         companyId,
       },
     });

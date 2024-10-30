@@ -28,8 +28,6 @@ import {
   onSubmit,
 } from "@/utils/company/createCompanyForm";
 import { useState } from "react";
-import { toast } from "sonner";
-import { createCompany } from "@/services/company";
 import LoadingSpinner from "../ui/loading-spinner";
 import { useRouter } from "next/navigation";
 

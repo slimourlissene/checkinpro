@@ -1,4 +1,5 @@
 import Login from "@/components/auth/login";
+import CreateCheckin from "@/components/checkin/createCheckin";
 import { ToggleTheme } from "@/components/navigation/toggleTheme";
 import { ISidebarItem } from "@/types";
 import {
@@ -8,6 +9,7 @@ import {
   Cookie,
   Handshake,
   Home,
+  PlusCircle,
   QrCode,
   Scale,
   Send,
@@ -51,10 +53,9 @@ export function computeSidebarGeneralItems({
 export function computeSidebarCheckInItems(): ISidebarItem[] {
   return [
     {
-      title: "Créer un émargement",
-      url: "/create",
-      icon: CirclePlus,
+      component: <CreateCheckin />,
     },
+
     {
       title: "Mes émargements",
       url: "/checkin",

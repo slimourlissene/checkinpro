@@ -29,6 +29,7 @@ model Account {
 
 model Checkin {
   id         String   @id @default(cuid())
+  name      String
   companyId  String   @map("company_id")
   records    Record[] @relation("CheckinRecords")
   company    Company  @relation(fields: [companyId], references: [id])

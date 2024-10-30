@@ -1,7 +1,5 @@
 "use client";
 
-import { type LucideIcon } from "lucide-react";
-
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -27,7 +25,9 @@ export function CheckInSidebar({ items }: { items: ISidebarItem[] }) {
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
-          ) : null
+          ) : (
+            item.component && <>{item.component}</>
+          )
         )}
       </SidebarMenu>
     </SidebarGroup>
