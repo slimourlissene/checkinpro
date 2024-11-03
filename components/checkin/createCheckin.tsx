@@ -21,14 +21,21 @@ import {
 } from "../ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { createCheckinSchema } from "@/utils/checkin/createCheckinForm";
+import {
+  createCheckinSchema,
+  onSubmit,
+} from "@/utils/checkin/createCheckinForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
+import { MultiSelect } from "../ui/multi-select";
+import { useState } from "react";
 
 export default function CreateCheckin() {
+  const [open, setOpen] = useState<boolean>(false);
+
   return (
-    <Dialog>
-      <DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
         <Button
           size={"sm"}
           className="w-full rounded-md py-1.5 px-2 justify-start font-normal text-sm"
@@ -45,19 +52,43 @@ export default function CreateCheckin() {
             Créez un émargement pour enregistrer la présence de vos employés.
           </DialogDescription>
         </DialogHeader>
-        <CreateCheckinForm />
-        <DialogFooter className="mt-2">
-          <DialogClose>
-            <Button variant={"outline"}>Annuler</Button>
-          </DialogClose>
-          <Button> Créer un émargement </Button>
-        </DialogFooter>
+        <CreateCheckinForm setOpen={setOpen} />
       </DialogContent>
     </Dialog>
   );
 }
 
-function CreateCheckinForm() {
+function CreateCheckinForm({ setOpen }: { setOpen: (open: boolean) => void }) {
+  const days: { value: string; label: string }[] = [
+    {
+      value: "monday",
+      label: "Lundi",
+    },
+    {
+      value: "tuesday",
+      label: "Mardi",
+    },
+    {
+      value: "wednesday",
+      label: "Mercredi",
+    },
+    {
+      value: "thursday",
+      label: "Jeudi",
+    },
+    {
+      value: "friday",
+      label: "Vendredi",
+    },
+    {
+      value: "saturday",
+      label: "Samedi",
+    },
+    {
+      value: "sunday",
+      label: "Dimanche",
+    },
+  ];
   const form = useForm<z.infer<typeof createCheckinSchema>>({
     resolver: zodResolver(createCheckinSchema),
     defaultValues: {
@@ -68,7 +99,10 @@ function CreateCheckinForm() {
 
   return (
     <Form {...form}>
-      <form className="space-y-4">
+      <form
+        className="space-y-4"
+        onSubmit={form.handleSubmit((values) => onSubmit({ values, setOpen }))}
+      >
         <FormField
           control={form.control}
           name="name"
@@ -89,12 +123,24 @@ function CreateCheckinForm() {
             <FormItem className="space-y-0.5">
               <FormLabel>Jours actifs</FormLabel>
               <FormControl>
-                <Input placeholder="Jours actifs" {...field} />
+                <MultiSelect
+                  options={days}
+                  onValueChange={field.onChange}
+                  animation={0}
+                  maxCount={7}
+                  placeholder="Sélectionnez les jours actifs"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+        <DialogFooter className="mt-2">
+          <DialogClose asChild>
+            <Button variant={"outline"}>Annuler</Button>
+          </DialogClose>
+          <Button type="submit">Créer</Button>
+        </DialogFooter>
       </form>
     </Form>
   );

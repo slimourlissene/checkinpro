@@ -55,7 +55,6 @@ export function computeSidebarCheckInItems(): ISidebarItem[] {
     {
       component: <CreateCheckin />,
     },
-
     {
       title: "Mes émargements",
       url: "/checkin",

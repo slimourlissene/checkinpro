@@ -5,4 +5,14 @@ const createCheckinSchema = z.object({
   activeDays: z.array(z.string()),
 });
 
-export { createCheckinSchema };
+async function onSubmit({
+  values,
+  setOpen,
+}: {
+  values: z.infer<typeof createCheckinSchema>;
+  setOpen: (open: boolean) => void;
+}) {
+  console.log(values);
+}
+
+export { createCheckinSchema, onSubmit };
