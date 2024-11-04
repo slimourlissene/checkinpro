@@ -5,14 +5,11 @@ import { isCompanyOwnedByUser } from "@/utils/company/isCompanyOwnedByUser";
 import { isUserInCompany } from "@/utils/company/isUserInCompany";
 import { Checkin } from "@prisma/client";
 
-export async function getCheckinsByCompany({
-  companyId,
-}: {
-  companyId: string;
-}): Promise<Checkin[]> {
+export async function getCheckinsByCompany(): Promise<Checkin[]> {
   try {
     const session = await auth();
     if (session?.user === undefined) throw new Error(`User not authenticated`);
+    const companyId = session.user.company.id;
     const company = await prisma.company.findUnique({
       where: {
         id: companyId,

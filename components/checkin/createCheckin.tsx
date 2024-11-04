@@ -29,6 +29,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import { MultiSelect } from "../ui/multi-select";
 import { useState } from "react";
+import LoadingSpinner from "../ui/loading-spinner";
 
 export default function CreateCheckin() {
   const [open, setOpen] = useState<boolean>(false);
@@ -59,6 +60,7 @@ export default function CreateCheckin() {
 }
 
 function CreateCheckinForm({ setOpen }: { setOpen: (open: boolean) => void }) {
+  const [loading, setLoading] = useState<boolean>(false);
   const days: { value: string; label: string }[] = [
     {
       value: "monday",
@@ -101,7 +103,7 @@ function CreateCheckinForm({ setOpen }: { setOpen: (open: boolean) => void }) {
     <Form {...form}>
       <form
         className="space-y-4"
-        onSubmit={form.handleSubmit((values) => onSubmit({ values, setOpen }))}
+        onSubmit={form.handleSubmit((values) => onSubmit({ values, setOpen, setLoading }))}
       >
         <FormField
           control={form.control}
@@ -139,7 +141,9 @@ function CreateCheckinForm({ setOpen }: { setOpen: (open: boolean) => void }) {
           <DialogClose asChild>
             <Button variant={"outline"}>Annuler</Button>
           </DialogClose>
-          <Button type="submit">Créer</Button>
+          <Button type="submit" className="w-[160px]">
+            {loading ? <LoadingSpinner /> : "Créer l'émargement"}
+          </Button>
         </DialogFooter>
       </form>
     </Form>

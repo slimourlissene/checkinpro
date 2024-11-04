@@ -1,6 +1,6 @@
 import ky from "ky";
 
 export const api = ky.create({
-  prefixUrl: window.location.origin,
+  prefixUrl: "http://localhost:3000",
   credentials: "include",
 });
