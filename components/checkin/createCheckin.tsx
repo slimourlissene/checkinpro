@@ -63,31 +63,31 @@ function CreateCheckinForm({ setOpen }: { setOpen: (open: boolean) => void }) {
   const [loading, setLoading] = useState<boolean>(false);
   const days: { value: string; label: string }[] = [
     {
-      value: "monday",
+      value: "1",
       label: "Lundi",
     },
     {
-      value: "tuesday",
+      value: "2",
       label: "Mardi",
     },
     {
-      value: "wednesday",
+      value: "3",
       label: "Mercredi",
     },
     {
-      value: "thursday",
+      value: "4",
       label: "Jeudi",
     },
     {
-      value: "friday",
+      value: "5",
       label: "Vendredi",
     },
     {
-      value: "saturday",
+      value: "6",
       label: "Samedi",
     },
     {
-      value: "sunday",
+      value: "7",
       label: "Dimanche",
     },
   ];
@@ -103,7 +103,7 @@ function CreateCheckinForm({ setOpen }: { setOpen: (open: boolean) => void }) {
     <Form {...form}>
       <form
         className="space-y-4"
-        onSubmit={form.handleSubmit((values) => onSubmit({ values, setOpen, setLoading }))}
+        onSubmit={form.handleSubmit((values: z.infer<typeof createCheckinSchema>) => onSubmit({ values, setOpen, setLoading }))}
       >
         <FormField
           control={form.control}

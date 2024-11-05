@@ -9,8 +9,18 @@ export default async function Company() {
   const company = await getCompanyById({ id: session.user.company.id });
 
   return (
-    <div className="p-4 w-full">
-      <WorkerList id={company.id} columns={columns} data={company.users} />
+    <div className="flex flex-col gap-8 p-4 w-full">
+      <div>
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-4">
+          Liste des employés
+        </h1>
+        <WorkerList id={company.id} columns={columns} data={company.users} />
+      </div>
+      <div>
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-4">
+          Liste des émargements
+        </h1>
+      </div>
     </div>
   );
 }

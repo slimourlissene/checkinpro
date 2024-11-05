@@ -26,7 +26,8 @@ export default function Logout() {
     setIsLoading(true);
     try {
       await signOut({
-        redirect: false,
+        redirect: true,
+        redirectTo: "/",
       });
       toast.success("Vous avez été déconnecté avec succès.");
       router.refresh();
