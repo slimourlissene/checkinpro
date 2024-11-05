@@ -103,7 +103,10 @@ function CreateCheckinForm({ setOpen }: { setOpen: (open: boolean) => void }) {
     <Form {...form}>
       <form
         className="space-y-4"
-        onSubmit={form.handleSubmit((values: z.infer<typeof createCheckinSchema>) => onSubmit({ values, setOpen, setLoading }))}
+        onSubmit={form.handleSubmit(
+          (values: z.infer<typeof createCheckinSchema>) =>
+            onSubmit({ values, setOpen, setLoading })
+        )}
       >
         <FormField
           control={form.control}
