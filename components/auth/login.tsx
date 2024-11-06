@@ -56,8 +56,12 @@ function LoginForm({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const loginSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(8),
+    email: z.string().email({
+      message: "L'adresse email n'est pas valide.",
+    }),
+    password: z.string().min(8, {
+      message: "Le mot de passe doit contenir au moins 8 caractères.",
+    }),
   });
 
   const form = useForm<z.infer<typeof loginSchema>>({

@@ -1,7 +1,5 @@
 "use client";
 
-import { type LucideIcon } from "lucide-react";
-
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -11,15 +9,16 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { ISidebarItem } from "@/types";
+import { Key } from "react";
 
 export function CheckInSidebar({ items }: { items: ISidebarItem[] }) {
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Émargements</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item: ISidebarItem) =>
+        {items.map((item: ISidebarItem, key: Key) =>
           item.url && item.title && item.icon ? (
-            <SidebarMenuItem key={item.title}>
+            <SidebarMenuItem key={key}>
               <SidebarMenuButton asChild>
                 <Link href={item.url}>
                   <item.icon />
@@ -27,7 +26,9 @@ export function CheckInSidebar({ items }: { items: ISidebarItem[] }) {
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
-          ) : null
+          ) : (
+            item.component && <span key={key}>{item.component}</span>
+          )
         )}
       </SidebarMenu>
     </SidebarGroup>

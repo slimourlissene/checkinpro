@@ -27,16 +27,41 @@ model Account {
   @@map("accounts")
 }
 
-model Company {
-  id        String   @id @default(cuid())
+model Checkin {
+  id         String   @id @default(cuid())
   name      String
+  companyId  String   @map("company_id")
+  records    Record[] @relation("CheckinRecords")
+  company    Company  @relation(fields: [companyId], references: [id])
+  activeDays String[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("checkins")
+}
+
+model Company {
+  id        String    @id @default(cuid())
+  name      String
+  checkins  Checkin[]
   users     User[]
-  ownerId   String?  @unique @map("owner_id")
-  owner     User?    @relation("CompanyOwner", fields: [ownerId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  ownerId   String?   @unique @map("owner_id")
+  owner     User?     @relation("CompanyOwner", fields: [ownerId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   @@map("companies")
+}
+
+model Record {
+  id        String   @id @default(cuid())
+  checkinId String   @map("checkin_id")
+  checkin   Checkin  @relation("CheckinRecords", fields: [checkinId], references: [id])
+  userId    String   @map("user_id")
+  user      User     @relation("UserRecords", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@map("records")
 }
 
 model Session {
@@ -61,6 +86,7 @@ model User {
   sessions      Session[]
   companyId     String?   @map("company_id")
   ownedCompany  Company?  @relation("CompanyOwner")
+  records       Record[]  @relation("UserRecords")
   isChief       Boolean   @default(false)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
