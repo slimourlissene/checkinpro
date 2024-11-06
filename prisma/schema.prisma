@@ -28,16 +28,26 @@ model Account {
 }
 
 model Checkin {
-  id         String   @id @default(cuid())
-  name      String
-  companyId  String   @map("company_id")
-  records    Record[] @relation("CheckinRecords")
-  company    Company  @relation(fields: [companyId], references: [id])
+  id         String           @id @default(cuid())
+  name       String
+  companyId  String           @map("company_id")
+  company    Company          @relation(fields: [companyId], references: [id])
+  sessions   CheckinSession[]
   activeDays String[]
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
 
   @@map("checkins")
+}
+
+model CheckinSession {
+  id        String   @id @default(cuid())
+  checkinId String   @map("checkin_id")
+  checkin   Checkin  @relation(fields: [checkinId], references: [id])
+  records   Record[] @relation("CheckinRecords")
+  createdAt DateTime @default(now())
+
+  @@map("checkin_sessions")
 }
 
 model Company {
@@ -54,12 +64,12 @@ model Company {
 }
 
 model Record {
-  id        String   @id @default(cuid())
-  checkinId String   @map("checkin_id")
-  checkin   Checkin  @relation("CheckinRecords", fields: [checkinId], references: [id])
-  userId    String   @map("user_id")
-  user      User     @relation("UserRecords", fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
+  id               String         @id @default(cuid())
+  checkinSessionId String         @map("checkin_session_id")
+  checkinSession   CheckinSession @relation("CheckinRecords", fields: [checkinSessionId], references: [id])
+  userId           String         @map("user_id")
+  user             User           @relation("UserRecords", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt        DateTime       @default(now())
 
   @@map("records")
 }

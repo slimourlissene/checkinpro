@@ -3,9 +3,11 @@ import { auth } from "@/app/auth";
 import { prisma } from "@/prisma";
 import { isCompanyOwnedByUser } from "@/utils/company/isCompanyOwnedByUser";
 import { isUserInCompany } from "@/utils/company/isUserInCompany";
-import { Checkin, Company } from "@prisma/client";
+import { Checkin, Company, User } from "@prisma/client";
+import bcrypt from "bcrypt";
+import QRCode from "qrcode";
 
-export async function getCheckinsByCompany(): Promise<(Checkin & { company: Company })[]> {
+export async function getCheckinsByCompany(): Promise<(Checkin & { company: Company & { users: User[] } })[]> {
   try {
     const session = await auth();
     if (session?.user === undefined) throw new Error(`User not authenticated`);
@@ -27,7 +29,11 @@ export async function getCheckinsByCompany(): Promise<(Checkin & { company: Comp
         companyId,
       },
       include: {
-        company: true,
+        company: {
+          include: {
+            users: true,
+          }
+        }
       },
       orderBy: {
         createdAt: "asc",
@@ -110,6 +116,49 @@ export async function createCheckin({
   } catch (error: unknown) {
     console.error(error);
     throw new Error(`Failed to create checkin`, {
+      cause: error,
+    });
+  }
+}
+
+export async function launchCheckin({ id }: { id: string }) {
+  try {
+    const session = await auth();
+    if (session?.user === undefined) throw new Error(`User not authenticated`);
+    const checkin = await prisma.checkin.findUnique({
+      where: {
+        id
+      },
+      include: {
+        company: true,
+      }
+    })
+    if (!checkin) throw new Error(`Checkin not found, id provided : ${id}`);
+    if (checkin.company.ownerId !== session.user.id) throw new Error(`User not authorized to launch checkin`);
+    const today = new Date();
+    let checkin_session = await prisma.checkinSession.findFirst({
+      where: {
+        checkinId: checkin.id,
+        createdAt: {
+          gte: new Date(today.setHours(0, 0, 0, 0)),
+          lt: new Date(today.setHours(23, 59, 59, 999)),
+        }
+      }
+    });
+    if (!checkin_session) {
+      checkin_session = await prisma.checkinSession.create({
+        data: {
+          checkinId: checkin.id,
+        }
+      });
+    }
+  
+    const salt = await bcrypt.genSalt(10);
+    const hashedId = await bcrypt.hash(checkin_session.id, salt);
+    return await QRCode.toDataURL(hashedId);
+  } catch (error: unknown) {
+    console.error(error);
+    throw new Error(`Failed to launch checkin`, {
       cause: error,
     });
   }

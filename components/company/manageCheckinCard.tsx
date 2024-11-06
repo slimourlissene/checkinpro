@@ -1,4 +1,5 @@
-import { Checkin, Company } from "@prisma/client";
+"use client";
+import { Checkin, Company, User } from "@prisma/client";
 import {
   Card,
   CardHeader,
@@ -6,19 +7,22 @@ import {
   CardContent,
   CardFooter,
 } from "../ui/card";
-import { Calendar, Clock1, Edit2, User, Trash } from "lucide-react";
+import { Calendar, Clock1, Edit2, User as UserIcon, Trash } from "lucide-react";
 import { Button } from "../ui/button";
 import InfoRow from "../checkin/infoRow";
 import { formatWeekday } from "@/utils/checkin/formatWeekday";
 import { DateTime } from "luxon";
-import { getCompanyById } from "@/services/company";
+import { launchCheckin } from "@/services/checkin";
 
-export default async function ManageCheckinCard({
+export default function ManageCheckinCard({
   checkin,
 }: {
-  checkin: Checkin;
+  checkin: Checkin & { company: Company & { users: User[] } };
 }) {
-  const company = await getCompanyById({ id: checkin.companyId });
+  async function onClick() {
+    const result = await launchCheckin({ id: checkin.id });
+    console.log(result);
+  } 
 
   return (
     <Card>
@@ -45,15 +49,15 @@ export default async function ManageCheckinCard({
           )}
         />
         <InfoRow
-          icon={<User className="w-4 h-4" />}
-          text={company.users.length.toString()}
+          icon={<UserIcon className="w-4 h-4" />}
+          text={checkin.company.users.length.toString()}
         />
       </CardContent>
       <CardFooter className="flex flex-row gap-4">
         <Button className="w-full" variant={"outline"}>
           Voir les enregistrements
         </Button>
-        <Button className="w-full" variant={"secondary"}>
+        <Button onClick={onClick} className="w-full" variant={"secondary"}>
           Lancer l'émargement
         </Button>
       </CardFooter>
