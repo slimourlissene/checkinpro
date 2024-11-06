@@ -7,7 +7,9 @@ import { Checkin, Company, User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import QRCode from "qrcode";
 
-export async function getCheckinsByCompany(): Promise<(Checkin & { company: Company & { users: User[] } })[]> {
+export async function getCheckinsByCompany(): Promise<
+  (Checkin & { company: Company & { users: User[] } })[]
+> {
   try {
     const session = await auth();
     if (session?.user === undefined) throw new Error(`User not authenticated`);
@@ -32,12 +34,12 @@ export async function getCheckinsByCompany(): Promise<(Checkin & { company: Comp
         company: {
           include: {
             users: true,
-          }
-        }
+          },
+        },
       },
       orderBy: {
         createdAt: "asc",
-      }
+      },
     });
   } catch (error: unknown) {
     console.error(error);
@@ -127,14 +129,15 @@ export async function launchCheckin({ id }: { id: string }) {
     if (session?.user === undefined) throw new Error(`User not authenticated`);
     const checkin = await prisma.checkin.findUnique({
       where: {
-        id
+        id,
       },
       include: {
         company: true,
-      }
-    })
+      },
+    });
     if (!checkin) throw new Error(`Checkin not found, id provided : ${id}`);
-    if (checkin.company.ownerId !== session.user.id) throw new Error(`User not authorized to launch checkin`);
+    if (checkin.company.ownerId !== session.user.id)
+      throw new Error(`User not authorized to launch checkin`);
     const today = new Date();
     let checkin_session = await prisma.checkinSession.findFirst({
       where: {
@@ -142,20 +145,23 @@ export async function launchCheckin({ id }: { id: string }) {
         createdAt: {
           gte: new Date(today.setHours(0, 0, 0, 0)),
           lt: new Date(today.setHours(23, 59, 59, 999)),
-        }
-      }
+        },
+      },
     });
     if (!checkin_session) {
       checkin_session = await prisma.checkinSession.create({
         data: {
           checkinId: checkin.id,
-        }
+        },
       });
     }
-  
+
     const salt = await bcrypt.genSalt(10);
     const hashedId = await bcrypt.hash(checkin_session.id, salt);
-    return await QRCode.toDataURL(hashedId);
+    return await QRCode.toDataURL(hashedId, {
+      errorCorrectionLevel: "H",
+      width: 300,
+    });
   } catch (error: unknown) {
     console.error(error);
     throw new Error(`Failed to launch checkin`, {

@@ -5,9 +5,9 @@ import { isUserInCompany } from "@/utils/company/isUserInCompany";
 import { Record } from "@prisma/client";
 
 export async function getRecordsByCheckin({
-  checkinId,
+  checkinSessionId,
 }: {
-  checkinId: string;
+  checkinSessionId: string;
 }): Promise<Record[]> {
   try {
     const session = await auth();
@@ -22,7 +22,7 @@ export async function getRecordsByCheckin({
 
     return await prisma.record.findMany({
       where: {
-        checkinId,
+        checkinSessionId,
       },
     });
   } catch (error: unknown) {
@@ -33,34 +33,41 @@ export async function getRecordsByCheckin({
   }
 }
 
-export async function createRecord({ checkinId }: { checkinId: string }) {
+export async function createRecord({
+  checkinSessionId,
+}: {
+  checkinSessionId: string;
+}) {
   try {
     const session = await auth();
     if (session?.user === undefined) throw new Error(`User not authenticated`);
 
-    const checkin = await prisma.checkin.findUnique({
+    const checkinSession = await prisma.checkin.findUnique({
       where: {
-        id: checkinId,
+        id: checkinSessionId,
       },
     });
-    if (!checkin)
-      throw new Error(`Checkin not found, id provided : ${checkinId}`);
+    if (!checkinSession)
+      throw new Error(
+        `Checkin session not found, id provided : ${checkinSessionId}`
+      );
 
     const company = await prisma.company.findUnique({
       where: {
-        id: checkin.companyId,
+        id: checkinSession.companyId,
       },
       include: {
         users: true,
       },
     });
     if (!company)
-      throw new Error(`Company not found, id provided : ${checkin.companyId}`);
+      throw new Error(
+        `Company not found, id provided : ${checkinSession.companyId}`
+      );
     isUserInCompany({ company });
-
     return await prisma.record.create({
       data: {
-        checkinId,
+        checkinSessionId,
         userId: session.user.id,
       },
     });

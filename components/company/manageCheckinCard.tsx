@@ -13,17 +13,13 @@ import InfoRow from "../checkin/infoRow";
 import { formatWeekday } from "@/utils/checkin/formatWeekday";
 import { DateTime } from "luxon";
 import { launchCheckin } from "@/services/checkin";
+import LaunchCheckin from "./launchCheckin";
 
 export default function ManageCheckinCard({
   checkin,
 }: {
   checkin: Checkin & { company: Company & { users: User[] } };
 }) {
-  async function onClick() {
-    const result = await launchCheckin({ id: checkin.id });
-    console.log(result);
-  } 
-
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between gap-12 space-y-0">
@@ -57,9 +53,7 @@ export default function ManageCheckinCard({
         <Button className="w-full" variant={"outline"}>
           Voir les enregistrements
         </Button>
-        <Button onClick={onClick} className="w-full" variant={"secondary"}>
-          Lancer l'émargement
-        </Button>
+        <LaunchCheckin id={checkin.id} />
       </CardFooter>
     </Card>
   );

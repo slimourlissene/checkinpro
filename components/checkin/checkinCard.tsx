@@ -13,6 +13,7 @@ import { Button } from "../ui/button";
 import InfoRow from "./infoRow";
 import { truncateText } from "@/utils/checkin/truncateText";
 import { formatWeekday } from "@/utils/checkin/formatWeekday";
+import ScanQRCode from "./scanQRCode";
 
 export default async function CheckinCard({
   checkin,
@@ -49,9 +50,7 @@ export default async function CheckinCard({
         />
       </CardContent>
       <CardFooter className="mt-auto">
-        <Button className="w-full" disabled={!isActive}>
-          S'émarger
-        </Button>
+        <ScanQRCode />
       </CardFooter>
     </Card>
   );
