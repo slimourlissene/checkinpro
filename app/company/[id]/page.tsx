@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import { getCheckinsByCompany } from "@/services/checkin";
 import { getCompanyById } from "@/services/company";
-import { Checkin } from "@prisma/client";
+import { Checkin, Company as TCompany, User } from "@prisma/client";
 import { Key } from "react";
 
 export default async function Company() {
@@ -35,10 +35,15 @@ export default async function Company() {
           </AccordionItem>
           <AccordionItem value="checkin">
             <AccordionTrigger>Liste des émargements</AccordionTrigger>
-            <AccordionContent className="flex flex-row flex-wrap gap-3">
-              {checkins.map((checkin: Checkin, key: Key) => (
-                <ManageCheckinCard checkin={checkin} key={key} />
-              ))}
+            <AccordionContent className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
+              {checkins.map(
+                (
+                  checkin: Checkin & { company: TCompany & { users: User[] } },
+                  key: Key
+                ) => (
+                  <ManageCheckinCard checkin={checkin} key={key} />
+                )
+              )}
             </AccordionContent>
           </AccordionItem>
         </Accordion>

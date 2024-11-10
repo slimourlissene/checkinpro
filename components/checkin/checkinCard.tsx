@@ -13,6 +13,7 @@ import { Button } from "../ui/button";
 import InfoRow from "./infoRow";
 import { truncateText } from "@/utils/checkin/truncateText";
 import { formatWeekday } from "@/utils/checkin/formatWeekday";
+import ScanQRCode from "./scanQRCode";
 
 export default async function CheckinCard({
   checkin,
@@ -24,13 +25,15 @@ export default async function CheckinCard({
   );
 
   return (
-    <Card className="w-[475px] h-[275px] flex flex-col">
+    <Card className="w-full h-[fit] flex flex-col">
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <CardTitle>
           {" "}
           {truncateText({ text: checkin.name, maxLength: 19 })}{" "}
         </CardTitle>
-        <Badge className="space-y-0">{isActive ? "Actif" : "Inactif"}</Badge>
+        <Badge className="space-y-0 mx-1">
+          {isActive ? "Actif" : "Inactif"}
+        </Badge>
       </CardHeader>
       <CardContent className="flex flex-col flex-grow gap-4">
         <InfoRow
@@ -48,11 +51,6 @@ export default async function CheckinCard({
           )}
         />
       </CardContent>
-      <CardFooter className="mt-auto">
-        <Button className="w-full" disabled={!isActive}>
-          S'émarger
-        </Button>
-      </CardFooter>
     </Card>
   );
 }
