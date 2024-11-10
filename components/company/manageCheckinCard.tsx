@@ -12,7 +12,6 @@ import { Button } from "../ui/button";
 import InfoRow from "../checkin/infoRow";
 import { formatWeekday } from "@/utils/checkin/formatWeekday";
 import { DateTime } from "luxon";
-import { launchCheckin } from "@/services/checkin";
 import LaunchCheckin from "./launchCheckin";
 
 export default function ManageCheckinCard({
@@ -21,19 +20,19 @@ export default function ManageCheckinCard({
   checkin: Checkin & { company: Company & { users: User[] } };
 }) {
   return (
-    <Card>
+    <Card className="w-full h-full flex flex-col">
       <CardHeader className="flex flex-row items-center justify-between gap-12 space-y-0">
         <CardTitle>{checkin.name}</CardTitle>
         <div className="flex flex-row gap-2">
-          <Button className="px-2" variant={"ghost"}>
+          <Button className="px-2" variant="ghost">
             <Edit2 />
           </Button>
-          <Button className="px-2" variant={"ghost"}>
+          <Button className="px-2" variant="ghost">
             <Trash />
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="flex flex-col gap-3">
+      <CardContent className="flex-grow flex flex-col gap-3">
         <InfoRow
           icon={<Calendar className="w-4 h-4" />}
           text={formatWeekday({ days: checkin.activeDays })}
@@ -49,8 +48,8 @@ export default function ManageCheckinCard({
           text={checkin.company.users.length.toString()}
         />
       </CardContent>
-      <CardFooter className="flex flex-row gap-4">
-        <Button className="w-full" variant={"outline"}>
+      <CardFooter className="flex flex-col gap-2">
+        <Button className="w-full" variant="outline">
           Voir les enregistrements
         </Button>
         <LaunchCheckin id={checkin.id} />

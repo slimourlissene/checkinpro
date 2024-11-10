@@ -1,5 +1,6 @@
 import Login from "@/components/auth/login";
 import CreateCheckin from "@/components/checkin/createCheckin";
+import ScanQRCode from "@/components/checkin/scanQRCode";
 import { ToggleTheme } from "@/components/navigation/toggleTheme";
 import { ISidebarItem } from "@/types";
 import {
@@ -54,6 +55,9 @@ export function computeSidebarCheckInItems(): ISidebarItem[] {
   return [
     {
       component: <CreateCheckin />,
+    },
+    {
+      component: <ScanQRCode />,
     },
     {
       title: "Mes émargements",

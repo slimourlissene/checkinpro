@@ -6,7 +6,8 @@ import { Key } from "react";
 import CheckinCard from "@/components/checkin/checkinCard";
 
 export default async function Checkin() {
-  const checkin: (TCheckin & { company: Company })[] | null = await getCheckinsByCompany();
+  const checkin: (TCheckin & { company: Company })[] | null =
+    await getCheckinsByCompany();
 
   return (
     <section>
@@ -15,16 +16,19 @@ export default async function Checkin() {
           Liste de mes émargements
         </h1>
         <p className="leading-7 text-muted-foreground">
-          Vous trouverez ci-dessous la liste des émargements auxquels vous êtes inscrits.
+          Vous trouverez ci-dessous la liste des émargements auxquels vous êtes
+          inscrits.
         </p>
         <div className="mt-8">
-          <div className="flex flex-row flex-wrap gap-2">
-            {checkin.map((checkin: TCheckin & { company: Company }, key: Key) => (
-              <CheckinCard checkin={checkin} key={key} />
-            ))}
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
+            {checkin.map(
+              (checkin: TCheckin & { company: Company }, key: Key) => (
+                <CheckinCard checkin={checkin} key={key} />
+              )
+            )}
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

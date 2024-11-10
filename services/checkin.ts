@@ -6,6 +6,7 @@ import { isUserInCompany } from "@/utils/company/isUserInCompany";
 import { Checkin, Company, User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import QRCode from "qrcode";
+import jwt from "jsonwebtoken";
 
 export async function getCheckinsByCompany(): Promise<
   (Checkin & { company: Company & { users: User[] } })[]
@@ -139,26 +140,40 @@ export async function launchCheckin({ id }: { id: string }) {
     if (checkin.company.ownerId !== session.user.id)
       throw new Error(`User not authorized to launch checkin`);
     const today = new Date();
-    let checkin_session = await prisma.checkinSession.findFirst({
+    const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+    const endOfDay = new Date(today.setHours(23, 59, 59, 999));
+
+    let checkinSession = await prisma.checkinSession.findFirst({
       where: {
         checkinId: checkin.id,
         createdAt: {
-          gte: new Date(today.setHours(0, 0, 0, 0)),
-          lt: new Date(today.setHours(23, 59, 59, 999)),
+          gte: startOfDay,
+          lt: endOfDay,
         },
       },
     });
-    if (!checkin_session) {
-      checkin_session = await prisma.checkinSession.create({
+
+    if (!checkinSession) {
+      checkinSession = await prisma.checkinSession.create({
         data: {
           checkinId: checkin.id,
         },
       });
     }
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedId = await bcrypt.hash(checkin_session.id, salt);
-    return await QRCode.toDataURL(hashedId, {
+    const tokenPayload = {
+      sessionId: checkinSession.id,
+      checkinId: checkin.id,
+    };
+
+    const secretKey = process.env.JWT_SECRET;
+    if (!secretKey) {
+      throw new Error("JWT_SECRET is not defined in the environment variables");
+    }
+
+    const token = jwt.sign(tokenPayload, secretKey, { expiresIn: "24h" });
+
+    return await QRCode.toDataURL(token, {
       errorCorrectionLevel: "H",
       width: 300,
     });
