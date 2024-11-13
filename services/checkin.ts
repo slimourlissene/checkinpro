@@ -3,14 +3,13 @@ import { auth } from "@/app/auth";
 import { prisma } from "@/prisma";
 import { isCompanyOwnedByUser } from "@/utils/company/isCompanyOwnedByUser";
 import { isUserInCompany } from "@/utils/company/isUserInCompany";
-import { Checkin, Company, User } from "@prisma/client";
+import { Checkin, CheckinSession, Company, Record, User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import QRCode from "qrcode";
 import jwt from "jsonwebtoken";
+import { ICheckinByCompany } from "@/types";
 
-export async function getCheckinsByCompany(): Promise<
-  (Checkin & { company: Company & { users: User[] } })[]
-> {
+export async function getCheckinsByCompany(): Promise<ICheckinByCompany[]> {
   try {
     const session = await auth();
     if (session?.user === undefined) throw new Error(`User not authenticated`);
@@ -35,6 +34,19 @@ export async function getCheckinsByCompany(): Promise<
         company: {
           include: {
             users: true,
+          },
+        },
+        sessions: {
+          include: {
+            records: {
+              include: {
+                user: {
+                  omit: {
+                    password: true,
+                  },
+                },
+              },
+            },
           },
         },
       },

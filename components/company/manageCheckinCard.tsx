@@ -1,5 +1,5 @@
 "use client";
-import { Checkin, Company, User } from "@prisma/client";
+import { Checkin, CheckinSession, Company, Record, User } from "@prisma/client";
 import {
   Card,
   CardHeader,
@@ -13,11 +13,13 @@ import InfoRow from "../checkin/infoRow";
 import { formatWeekday } from "@/utils/checkin/formatWeekday";
 import { DateTime } from "luxon";
 import LaunchCheckin from "./launchCheckin";
+import DisplayRecords from "./displayRecords";
+import { ICheckinByCompany } from "@/types";
 
 export default function ManageCheckinCard({
   checkin,
 }: {
-  checkin: Checkin & { company: Company & { users: User[] } };
+  checkin: ICheckinByCompany;
 }) {
   return (
     <Card className="w-full h-full flex flex-col">
@@ -49,9 +51,7 @@ export default function ManageCheckinCard({
         />
       </CardContent>
       <CardFooter className="flex flex-col gap-2">
-        <Button className="w-full" variant="outline">
-          Voir les enregistrements
-        </Button>
+        <DisplayRecords checkinSessions={checkin.sessions} />
         <LaunchCheckin id={checkin.id} />
       </CardFooter>
     </Card>
