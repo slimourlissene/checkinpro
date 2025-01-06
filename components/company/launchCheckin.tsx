@@ -26,14 +26,15 @@ export default function LaunchCheckin({ id }: { id: string }) {
     <Dialog>
       <DialogTrigger asChild>
         <Button className="w-full" onClick={onClick} variant={"secondary"}>
-          Lancer l'émargement
+          Lancer l&apos;émargement
         </Button>
       </DialogTrigger>
       <DialogContent className="min-h-[450px]">
         <DialogHeader>
           <DialogTitle>Émargement lancé avec succès !</DialogTitle>
           <DialogDescription>
-            Vos employés peuvent maintenant s'émarger en scannant le QR code.
+            Vos employés peuvent maintenant s&apos;émarger en scannant le QR
+            code.
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-row items-center justify-center min-h-[300px]">
@@ -51,7 +52,7 @@ export default function LaunchCheckin({ id }: { id: string }) {
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant={"secondary"}>Arrêter l'émargement</Button>
+            <Button variant={"secondary"}>Arrêter l&apos;émargement</Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

@@ -5,11 +5,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User } from "@prisma/client";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Row } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
 import DeleteWorker from "./deleteWorker";
@@ -64,27 +63,28 @@ export const columns: ColumnDef<User>[] = [
     id: "actions",
     header: "Actions",
     cell: ({ row }) => {
-      const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
-      return (
-        <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
-          <DropdownMenuTrigger asChild>
-            <Button variant={"ghost"} className="h-8 w-8 p-0">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="*:cursor-pointer" align="start">
-            <ModifyWorker
-              user={row.original}
-              setDropdownOpen={setDropdownOpen}
-            />
-            <DeleteWorker
-              emails={[row.getValue("email")]}
-              isDropdownButton={true}
-              setDropdownOpen={setDropdownOpen}
-            />
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+      return <Actions row={row} />;
     },
   },
 ];
+
+function Actions({ row }: { row: Row<User> }) {
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  return (
+    <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
+      <DropdownMenuTrigger asChild>
+        <Button variant={"ghost"} className="h-8 w-8 p-0">
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="*:cursor-pointer" align="start">
+        <ModifyWorker user={row.original} setDropdownOpen={setDropdownOpen} />
+        <DeleteWorker
+          emails={[row.getValue("email")]}
+          isDropdownButton={true}
+          setDropdownOpen={setDropdownOpen}
+        />
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}

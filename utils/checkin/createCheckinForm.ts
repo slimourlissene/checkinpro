@@ -18,7 +18,6 @@ async function onSubmit({
 }) {
   setLoading(true);
   try {
-    console.log(values);
     await createCheckin({
       name: values.name,
       activeDays: values.activeDays,
