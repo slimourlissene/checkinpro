@@ -113,7 +113,7 @@ function CreateCheckinForm({ setOpen }: { setOpen: (open: boolean) => void }) {
           name="name"
           render={({ field }) => (
             <FormItem className="space-y-0.5">
-              <FormLabel>Nom de l'émargement</FormLabel>
+              <FormLabel>Nom de l&apos;émargement</FormLabel>
               <FormControl>
                 <Input placeholder="Nom de l'émargement" {...field} />
               </FormControl>

@@ -3,8 +3,7 @@ import { auth } from "@/app/auth";
 import { prisma } from "@/prisma";
 import { isCompanyOwnedByUser } from "@/utils/company/isCompanyOwnedByUser";
 import { isUserInCompany } from "@/utils/company/isUserInCompany";
-import { Checkin, CheckinSession, Company, Record, User } from "@prisma/client";
-import bcrypt from "bcrypt";
+import { Checkin } from "@prisma/client";
 import QRCode from "qrcode";
 import jwt from "jsonwebtoken";
 import { ICheckinByCompany } from "@/types";
@@ -37,6 +36,9 @@ export async function getCheckinsByCompany(): Promise<ICheckinByCompany[]> {
           },
         },
         sessions: {
+          orderBy: {
+            createdAt: "desc",
+          },
           include: {
             records: {
               include: {

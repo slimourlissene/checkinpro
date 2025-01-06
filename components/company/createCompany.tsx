@@ -56,8 +56,8 @@ export default function CreateCompanyDialog() {
         <DialogHeader>
           <DialogTitle> Créer une entreprise </DialogTitle>
           <DialogDescription>
-            Vous n'avez pas encore d'entreprise, créez-en une pour pouvoir
-            ensuite y ajouter vos employés.
+            Vous n&apos;avez pas encore d&apos;entreprise, créez-en une pour
+            pouvoir ensuite y ajouter vos employés.
           </DialogDescription>
         </DialogHeader>
         <CreateCompanyForm setOpen={setOpen} />
@@ -89,7 +89,7 @@ function CreateCompanyForm({ setOpen }: { setOpen: (open: boolean) => void }) {
           name="name"
           render={({ field }) => (
             <FormItem className="space-y-1">
-              <FormLabel>Nom de l'entreprise</FormLabel>
+              <FormLabel>Nom de l&apos;entreprise</FormLabel>
               <FormControl>
                 <Input placeholder="Nom de l'entreprise" {...field} />
               </FormControl>

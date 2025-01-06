@@ -14,7 +14,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -51,8 +50,8 @@ export default function ModifyWorker({
             Modifier un employé
           </DialogTitle>
           <DialogDescription>
-            Modifier les informations de l'employé en remplissant le formulaire
-            ci-dessous.
+            Modifier les informations de l&apos;employé en remplissant le
+            formulaire ci-dessous.
           </DialogDescription>
         </DialogHeader>
         <ModifyWorkerForm user={user} setDropdownOpen={setDropdownOpen} />
@@ -136,7 +135,9 @@ function ModifyWorkerForm({
             <DialogClose asChild>
               <Button variant={"outline"}>Annuler</Button>
             </DialogClose>
-            <Button>{loading ? <LoadingSpinner /> : "Modifier"}</Button>
+            <Button className="w-[100px]">
+              {loading ? <LoadingSpinner /> : "Modifier"}
+            </Button>
           </DialogFooter>
         </div>
       </form>

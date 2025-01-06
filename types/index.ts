@@ -1,5 +1,4 @@
-import { Checkin, CheckinSession, Company, Record } from "@prisma/client";
-import { User } from "next-auth";
+import { Checkin, CheckinSession, Company, Record, User } from "@prisma/client";
 
 export interface ISidebarItem {
   title?: string;
@@ -24,4 +23,12 @@ export interface IUser extends User {
 export interface ICheckinByCompany extends Checkin {
   company: Company & { users: User[] };
   sessions: (CheckinSession & { records: (Record & { user: User })[] })[];
+}
+
+export interface ICheckinSessionWithRecords extends CheckinSession {
+  records: (Record & { user: User })[];
+}
+
+export interface ICheckinRecordsWithUsers extends Record {
+  user: User;
 }

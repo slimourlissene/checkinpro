@@ -9,15 +9,21 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
-import { CheckinSession } from "@prisma/client";
-import { ICheckinByCompany } from "@/types";
-import { Accordion } from "../ui/accordion";
-import RecordContent from "./recordContent";
+import { ICheckinSessionWithRecords } from "@/types";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../ui/accordion";
+import { Key } from "react";
+import RecordList from "./table/recordList/recordList";
+import { DateTime } from "luxon";
 
 export default function DisplayRecords({
   checkinSessions,
 }: {
-  checkinSessions: CheckinSession[];
+  checkinSessions: ICheckinSessionWithRecords[];
 }) {
   return (
     <Dialog>
@@ -26,21 +32,44 @@ export default function DisplayRecords({
           Voir les enregistrements
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[80%]">
         <DialogHeader>
           <DialogTitle> Voir les enregistrements </DialogTitle>
           <DialogDescription>
             Vous pouvez voir les enregistrements de vos employés ici, chaque
-            session d'émargement est enregistrée et listée ci-dessous.
+            session d&apos;émargement est enregistrée et listée ci-dessous.
           </DialogDescription>
         </DialogHeader>
         <ScrollArea>
           <Accordion type="single" collapsible>
-          {checkinSessions.map((session) => (
-            {session.records.map((record) => (
-              <RecordContent record={record} />
-            ))}
-          ))}
+            {checkinSessions.map(
+              (checkinSession: ICheckinSessionWithRecords, key: Key) =>
+                checkinSession.records.length > 0 ? (
+                  <AccordionItem key={key} value={checkinSession.id}>
+                    <AccordionTrigger>
+                      Émargement du{" "}
+                      {DateTime.fromJSDate(checkinSession.createdAt).toFormat(
+                        "dd/MM/yyyy"
+                      )}
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <RecordList key={key} records={checkinSession.records} />
+                    </AccordionContent>
+                  </AccordionItem>
+                ) : (
+                  <AccordionItem key={key} value={checkinSession.id}>
+                    <AccordionTrigger>
+                      Émargement du{" "}
+                      {checkinSession.createdAt.toLocaleDateString()}{" "}
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <span className="text-muted-foreground font-semibold">
+                        Aucun enregistrement pour cette session
+                      </span>
+                    </AccordionContent>
+                  </AccordionItem>
+                )
+            )}
           </Accordion>
         </ScrollArea>
       </DialogContent>

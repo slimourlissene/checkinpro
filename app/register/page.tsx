@@ -17,7 +17,7 @@ export default function Register() {
             pour activer votre accès personnel.
           </p>
           <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight mt-6">
-            Étapes d'activation de votre compte
+            Étapes d&apos;activation de votre compte
           </h2>
           <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
             <li>Entrez votre adresse email dans le champ ci-dessous.</li>
@@ -29,8 +29,8 @@ export default function Register() {
           </ul>
           <p>
             Une fois votre mot de passe défini, vous pourrez vous connecter à
-            l'application et accéder aux fonctionnalités de gestion
-            d'émargement.
+            l&apos;application et accéder aux fonctionnalités de gestion
+            d&apos;émargement.
           </p>
         </div>
         <div className="mt-6">

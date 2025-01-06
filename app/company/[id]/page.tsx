@@ -1,7 +1,7 @@
 import { auth } from "@/app/auth";
 import ManageCheckinCard from "@/components/company/manageCheckinCard";
-import { columns } from "@/components/company/table/columns";
-import WorkerList from "@/components/company/table/workerList";
+import { columns } from "@/components/company/table/workerList/columns";
+import WorkerList from "@/components/company/table/workerList/workerList";
 import {
   Accordion,
   AccordionContent,
