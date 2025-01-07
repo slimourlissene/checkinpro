@@ -84,7 +84,7 @@ function LoginForm({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
       if (!result?.error) {
         setIsOpen(false);
         toast.success("Vous êtes désormais connecté.");
-        router.refresh();
+        window.location.reload();
       } else {
         throw new Error(result.error);
       }

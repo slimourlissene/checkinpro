@@ -5,7 +5,6 @@ import { CheckInSidebar } from "./checkInSidebar";
 import { LegalSidebar } from "./legalSidebar";
 import { UserSidebar } from "./userSidebar";
 import { Sidebar, SidebarContent, SidebarFooter } from "../ui/sidebar";
-import { User } from "next-auth";
 import { ISidebarItem, IUser } from "@/types";
 import { CompanyHeader } from "./companyHeader";
 import {
@@ -13,7 +12,6 @@ import {
   computeSidebarGeneralItems,
   computeSidebarLegalItems,
 } from "@/utils/navigation";
-import { Company } from "@prisma/client";
 
 export default function AppSidebar({
   user,

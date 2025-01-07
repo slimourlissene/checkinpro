@@ -6,9 +6,8 @@ import { Toaster } from "sonner";
 import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import Sidebar from "@/components/navigation/sidebar";
 import { auth } from "./auth";
-import { useTheme } from "next-themes";
-import { IUser } from "@/types";
-import { getCompanyById } from "@/services/company";
+import { Session } from "next-auth";
+import LoadingBar from "@/components/ui/loading-bar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,7 +32,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
+  const session: Session | null = await auth();
 
   return (
     <html lang="fr" suppressHydrationWarning>
@@ -41,7 +40,8 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable}`}
       >
         <Providers>
-          <Sidebar user={session?.user as IUser} />
+          <LoadingBar />
+          <Sidebar user={session?.user} />
           <SidebarInset>
             <header className="flex h-16 shrink-0 items-center gap-2">
               <div className="flex items-center gap-2 px-4">

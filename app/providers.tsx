@@ -1,8 +1,10 @@
+"use client";
 import { ThemeProvider } from "./theme";
 import { SessionProvider } from "next-auth/react";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { useTheme } from "next-themes";
 
-export default async function Providers({
+export default function Providers({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (

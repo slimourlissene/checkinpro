@@ -4,21 +4,24 @@ import Credentials from "next-auth/providers/credentials";
 import Nodemailer from "next-auth/providers/nodemailer";
 import { prisma } from "@/prisma";
 import { getUserByEmail } from "@/services/user";
-import { User } from "@prisma/client";
+import { Company, User } from "@prisma/client";
 import bcrypt from "bcrypt";
 
 declare module "next-auth" {
   interface Session {
     user: {
       id: string;
+      firstname: string;
+      lastname: string;
+      password: string;
       email: string;
+      emailVerified: Date;
       isPasswordSet: boolean;
       isChief: boolean;
-      company: {
-        id: string;
-        name: string;
-        users: User[];
-      };
+      companyId: string;
+      createdAt: Date;
+      updatedAt: Date;
+      company: Company & { user: User[] };
     };
   }
 }

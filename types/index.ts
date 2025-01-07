@@ -14,8 +14,6 @@ export interface IPartialUser {
 }
 
 export interface IUser extends User {
-  company: Company | null;
-  companyId: string | null;
   isChief: boolean;
   isPasswordSet: boolean;
 }
