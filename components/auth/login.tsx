@@ -25,7 +25,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import LoadingSpinner from "../ui/loading-spinner";
-import { Key } from "lucide-react";
+import { Key, UserRoundSearch } from "lucide-react";
 import { SidebarMenuButton } from "../ui/sidebar";
 
 export default function Login() {
@@ -84,7 +84,7 @@ function LoginForm({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
       if (!result?.error) {
         setIsOpen(false);
         toast.success("Vous êtes désormais connecté.");
-        window.location.reload();
+        router.refresh();
       } else {
         throw new Error(result.error);
       }

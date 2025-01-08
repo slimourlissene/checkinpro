@@ -5,7 +5,7 @@ import Providers from "./providers";
 import { Toaster } from "sonner";
 import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import Sidebar from "@/components/navigation/sidebar";
-import { auth } from "./auth";
+import { auth } from "../auth";
 import { Session } from "next-auth";
 import LoadingBar from "@/components/ui/loading-bar";
 

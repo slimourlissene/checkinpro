@@ -1,6 +1,7 @@
 import { createCheckin } from "@/services/checkin";
 import { toast } from "sonner";
 import { z } from "zod";
+import { resolveActionResult } from "../next-safe-action/resolveActionResult";
 
 const createCheckinSchema = z.object({
   name: z.string().min(2),
@@ -18,10 +19,12 @@ async function onSubmit({
 }) {
   setLoading(true);
   try {
-    await createCheckin({
-      name: values.name,
-      activeDays: values.activeDays,
-    });
+    await resolveActionResult(
+      createCheckin({
+        name: values.name,
+        activeDays: values.activeDays,
+      })
+    );
     toast.success("Votre émargement a été créé avec succès.");
   } catch (error: unknown) {
     console.error(error);

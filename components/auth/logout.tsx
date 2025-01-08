@@ -26,11 +26,12 @@ export default function Logout() {
     setIsLoading(true);
     try {
       await signOut({
-        redirect: true,
-        redirectTo: "/",
+        redirect: false,
       });
-      toast.success("Vous avez été déconnecté avec succès.");
-      router.refresh();
+      toast.success("Vous allez être déconnecté dans un instant.");
+      setTimeout(() => {
+        router.refresh();
+      }, 1000);
     } catch (error) {
       toast.error("Une erreur est survenue lors de la connexion.");
       console.error(error);
