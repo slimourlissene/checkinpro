@@ -1,4 +1,6 @@
-import { auth } from "@/app/auth";
+"use server";
+import { auth } from "@/auth";
+import { ActionError } from "@/lib/safe-actions";
 import { Company, User } from "@prisma/client";
 
 export async function isUserInCompany({
@@ -9,10 +11,10 @@ export async function isUserInCompany({
   const session = await auth();
 
   if (session?.user === undefined) {
-    throw new Error(`User not authenticated`);
+    throw new ActionError(`User not authenticated`);
   }
 
   if (!company.users.some((user) => user.id === session.user?.id)) {
-    throw new Error(`User is not in the company`);
+    throw new ActionError(`User is not in the company`);
   }
 }

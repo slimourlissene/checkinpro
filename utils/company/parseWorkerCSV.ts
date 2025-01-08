@@ -34,7 +34,7 @@ export function onFileChange({
 export function onClick({
   fileInputRef,
 }: {
-  fileInputRef: RefObject<HTMLInputElement>;
+  fileInputRef: RefObject<HTMLInputElement | null>;
 }) {
   if (fileInputRef.current) {
     fileInputRef.current.click();

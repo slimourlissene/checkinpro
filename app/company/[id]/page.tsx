@@ -1,4 +1,3 @@
-import { auth } from "@/app/auth";
 import ManageCheckinCard from "@/components/company/manageCheckinCard";
 import { columns } from "@/components/company/table/workerList/columns";
 import WorkerList from "@/components/company/table/workerList/workerList";
@@ -11,20 +10,13 @@ import {
 import { getCheckinsByCompany } from "@/services/checkin";
 import { getCompanyById } from "@/services/company";
 import { ICheckinByCompany } from "@/types";
-import {
-  Checkin,
-  CheckinSession,
-  Record,
-  Company as TCompany,
-  User,
-} from "@prisma/client";
 import { Key } from "react";
+import { resolveActionResult } from "@/utils/next-safe-action/resolveActionResult";
 
-export default async function Company() {
-  const session = await auth();
-  if (session?.user === undefined) return null;
-  const company = await getCompanyById({ id: session.user.company.id });
-  const checkins = await getCheckinsByCompany();
+export default async function Company({ params }: { params: { id: string } }) {
+  const { id } = await params;
+  const company = await resolveActionResult(getCompanyById({ id }));
+  const checkins = await resolveActionResult(getCheckinsByCompany());
 
   return (
     <div className="flex flex-col w-full gap-8 p-4">

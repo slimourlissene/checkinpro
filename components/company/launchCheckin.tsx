@@ -13,12 +13,13 @@ import {
 import { useState } from "react";
 import Image from "next/image";
 import LoadingSpinner from "../ui/loading-spinner";
+import { resolveActionResult } from "@/utils/next-safe-action/resolveActionResult";
 
 export default function LaunchCheckin({ id }: { id: string }) {
   const [qrCode, setQrCode] = useState<string | null>(null);
 
   async function onClick() {
-    const result = await launchCheckin({ id });
+    const result = await resolveActionResult(launchCheckin({ id }));
     setQrCode(result);
   }
 

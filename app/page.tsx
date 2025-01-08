@@ -1,5 +1,5 @@
 import ResetPassword from "@/components/auth/resetPassword";
-import { auth } from "./auth";
+import { auth } from "../auth";
 
 export default async function Home() {
   const session: any = await auth();

@@ -6,6 +6,7 @@ import { prisma } from "@/prisma";
 import { getUserByEmail } from "@/services/user";
 import { Company, User } from "@prisma/client";
 import bcrypt from "bcrypt";
+import { resolveActionResult } from "./utils/next-safe-action/resolveActionResult";
 
 declare module "next-auth" {
   interface Session {
@@ -43,9 +44,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       authorize: async (credentials): Promise<User | null> => {
         try {
-          const user: User | null = await getUserByEmail({
-            email: credentials.email as string,
-          });
+          const user: User | null = await resolveActionResult(
+            getUserByEmail({
+              email: credentials.email as string,
+            })
+          );
 
           if (
             !user ||
