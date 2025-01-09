@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { auth } from "@/app/auth";
 import { unauthorized } from "next/navigation";
 
 export default async function OrderLayout({

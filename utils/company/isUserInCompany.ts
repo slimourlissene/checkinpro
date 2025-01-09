@@ -1,5 +1,5 @@
 "use server";
-import { auth } from "@/auth";
+import { auth } from "@/app/auth";
 import { ActionError } from "@/lib/safe-actions";
 import { Company, User } from "@prisma/client";
 
