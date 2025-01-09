@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { auth } from "@/app/auth";
 import { Session } from "next-auth";
 import { createSafeActionClient } from "next-safe-action";
 
