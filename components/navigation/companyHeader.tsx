@@ -8,21 +8,21 @@ import {
   SidebarMenuButton,
 } from "../ui/sidebar";
 import Link from "next/link";
-import { IUser } from "@/types";
+import { IUserWithCompany } from "@/types";
 import CreateCompanyDialog from "../company/createCompany";
 
-export function CompanyHeader({ user }: { user: IUser }) {
+export function CompanyHeader({ user }: { user: IUserWithCompany }) {
   return (
     <SidebarHeader>
       <SidebarMenu>
         {user.company === null && user.isChief && <CreateCompanyDialog />}
-        {user.company !== null && <MyCompany user={user} />}
+        {user.company !== null && user.isChief && <MyCompany user={user} />}
       </SidebarMenu>
     </SidebarHeader>
   );
 }
 
-function MyCompany({ user }: { user: IUser }) {
+function MyCompany({ user }: { user: IUserWithCompany }) {
   return (
     <SidebarMenuItem>
       <SidebarMenuButton size="lg" asChild>

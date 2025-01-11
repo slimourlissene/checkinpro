@@ -144,8 +144,8 @@ function CreateCheckinForm({ setOpen }: { setOpen: (open: boolean) => void }) {
           <DialogClose asChild>
             <Button variant={"outline"}>Annuler</Button>
           </DialogClose>
-          <Button type="submit" className="w-[160px]">
-            {loading ? <LoadingSpinner /> : "Créer l'émargement"}
+          <Button loading={loading} type="submit" className="w-[160px]">
+            Créer l'émargement
           </Button>
         </DialogFooter>
       </form>

@@ -1,4 +1,5 @@
 import { auth } from "@/app/auth";
+import { ActionError } from "@/lib/safe-actions";
 
 export async function isCompanyOwnedByUser({
   companyOwnerId,
@@ -7,10 +8,10 @@ export async function isCompanyOwnedByUser({
 }): Promise<void> {
   const session = await auth();
   if (session?.user === undefined) {
-    throw new Error(`User not authenticated`);
+    throw new ActionError(`User not authenticated`);
   }
 
   if (session.user?.id !== companyOwnerId) {
-    throw new Error(`User is not the owner of the company`);
+    throw new ActionError(`User is not the owner of the company`);
   }
 }

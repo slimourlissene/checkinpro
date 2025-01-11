@@ -18,6 +18,10 @@ export interface IUser extends User {
   isPasswordSet: boolean;
 }
 
+export interface IUserWithCompany extends IUser {
+  company: Company;
+}
+
 export interface ICheckinByCompany extends Checkin {
   company: Company & { users: User[] };
   sessions: (CheckinSession & { records: (Record & { user: User })[] })[];

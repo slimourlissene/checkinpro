@@ -49,7 +49,7 @@ function ResetPasswordForm({
   email: string;
   setIsOpen: (isOpen: boolean) => void;
 }) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const resetPasswordSchema = z.object({
     newPassword: z.string().min(8, {
       message: "Votre mot de passe doit faire au minimum 8 caractères.",
@@ -67,7 +67,7 @@ function ResetPasswordForm({
   });
 
   async function onSubmit(values: z.infer<typeof resetPasswordSchema>) {
-    setIsLoading(true);
+    setLoading(true);
     const { newPassword, confirmPassword } = values;
     try {
       if (newPassword !== confirmPassword) {
@@ -83,7 +83,7 @@ function ResetPasswordForm({
         "Une erreur est survenue lors de la réinitialisation du mot de passe."
       );
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   }
 
@@ -129,9 +129,9 @@ function ResetPasswordForm({
             </FormItem>
           )}
         />
-        <div className="w-full flex flex-row gap-4 justify-end">
-          <Button type="submit">
-            {isLoading ? <LoadingSpinner /> : "Envoyer"}
+        <div className="w-[150px] flex flex-row gap-4 justify-end">
+          <Button loading={loading} type="submit">
+            Envoyer
           </Button>
         </div>
       </form>

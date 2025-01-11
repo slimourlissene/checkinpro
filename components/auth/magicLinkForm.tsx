@@ -14,12 +14,13 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { sendMagicLink } from "@/api/sendMagicLink";
 import { useState } from "react";
-import LoadingSpinner from "../ui/loading-spinner";
 
 export default function MagicLinkForm() {
   const [loading, setLoading] = useState<boolean>(false);
   const magicLinkSchema = z.object({
-    email: z.string().email(),
+    email: z.string().email({
+      message: "Adresse email invalide",
+    }),
   });
 
   const form = useForm<z.infer<typeof magicLinkSchema>>({
@@ -50,7 +51,7 @@ export default function MagicLinkForm() {
   return (
     <Form {...form}>
       <form
-        className="flex flex-row gap-3 items-end"
+        className="flex flex-row gap-3"
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField
@@ -70,8 +71,8 @@ export default function MagicLinkForm() {
             </FormItem>
           )}
         />
-        <Button className="w-[125px]" type="submit">
-          {loading ? <LoadingSpinner /> : "Envoyer le lien"}
+        <Button loading={loading} className="w-[150px]" type="submit">
+          Envoyer le lien
         </Button>
       </form>
     </Form>

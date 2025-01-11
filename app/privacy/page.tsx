@@ -3,8 +3,8 @@ import Link from "next/link";
 export default function Privacy() {
   return (
     <div className="min-h-screen pl-4 pt-2 pb-8">
-      <div className="max-w-4xl rounded-md">
-        <h1 className="text-3xl font-bold mb-4">
+      <div className="max-w-5xl rounded-md">
+        <h1 className="scroll-m-20 text-4xl mb-4 font-extrabold tracking-tight lg:text-6xl">
           Politique de Confidentialité
         </h1>
         <p className="mb-4">

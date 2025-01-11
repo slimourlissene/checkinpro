@@ -3,8 +3,10 @@ import Link from "next/link";
 export default function Legal() {
   return (
     <div className="min-h-screen pl-4 pt-2 pb-8">
-      <div className="max-w-4xl rounded-md">
-        <h1 className="text-3xl font-bold mb-4">Mentions légales</h1>
+      <div className="max-w-5xl rounded-md">
+        <h1 className="scroll-m-20 text-4xl mb-4 font-extrabold tracking-tight lg:text-6xl">
+          Mentions légales
+        </h1>
         <p className="mb-4">
           Dernière mise à jour : <strong>09/01/2025</strong>
         </p>
@@ -37,13 +39,17 @@ export default function Legal() {
         </ul>
         <h2 className="text-2xl font-semibold mb-2">Hébergement</h2>
         <p className="mb-4">
-          Ce site est hébergé par <strong>Vercel Inc.</strong>, situé au 340 S
-          Lemon Ave #4133, Walnut, CA 91789, États-Unis. Pour toute question
-          relative à l’hébergement, vous pouvez consulter le site de l’hébergeur
-          à l’adresse suivante :{" "}
-          <a href="https://vercel.com" className="text-blue-600">
+          Ce site est hébergé par <strong>Vercel Inc.</strong>, situé au 650
+          California St San Francisco, CA 94108, United States. Pour toute
+          question relative à l’hébergement, vous pouvez consulter le site de
+          l’hébergeur à l’adresse suivante :{" "}
+          <Link
+            href="https://vercel.com"
+            target="_blank"
+            className="text-blue-600"
+          >
             vercel.com
-          </a>
+          </Link>
           .
         </p>
         <h2 className="text-2xl font-semibold mb-2">
