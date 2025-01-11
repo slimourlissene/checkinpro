@@ -45,7 +45,7 @@ export const columns: ColumnDef<User>[] = [
     header: () => <span className="max-sm:hidden">Prénom</span>,
     cell: ({ row }) => {
       return (
-        <span className="max-sm:hidden"> {row.getValue("firstname")} </span>
+        <span className="max-sm:hidden p-0"> {row.getValue("firstname")} </span>
       );
     },
   },
@@ -56,7 +56,10 @@ export const columns: ColumnDef<User>[] = [
   {
     id: "email",
     accessorKey: "email",
-    header: "Email",
+    header: () => <span className="max-sm:hidden">Email</span>,
+    cell: ({ row }) => {
+      return <span className="max-sm:hidden"> {row.getValue("email")} </span>;
+    },
   },
 
   {

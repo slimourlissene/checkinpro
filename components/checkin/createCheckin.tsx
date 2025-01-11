@@ -29,7 +29,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import { MultiSelect } from "../ui/multi-select";
 import { useState } from "react";
-import LoadingSpinner from "../ui/loading-spinner";
 
 export default function CreateCheckin() {
   const [open, setOpen] = useState<boolean>(false);

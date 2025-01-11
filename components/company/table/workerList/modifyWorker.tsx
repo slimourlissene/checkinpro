@@ -17,7 +17,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import LoadingSpinner from "@/components/ui/loading-spinner";
 import { IPartialUser } from "@/types";
 import { modifyWorkerSchema, onSubmit } from "@/utils/company/modifyWorkerForm";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -44,7 +43,7 @@ export default function ModifyWorker({
           Modifier
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-3xl">
+      <DialogContent className="sm:max-w-xl max-w-[95%] rounded-lg">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold">
             Modifier un employé
@@ -92,7 +91,7 @@ function ModifyWorkerForm({
         )}
         className="flex flex-col space-y-4"
       >
-        <div className="flex flex-row space-x-2 w-full *:w-1/3">
+        <div className="w-full flex lg:flex-row lg:space-x-2 lg:space-y-0 lg:*:w-1/3 flex-col space-y-4">
           <FormField
             control={form.control}
             name="firstname"
@@ -131,7 +130,7 @@ function ModifyWorkerForm({
           />
         </div>
         <div className="flex flex-row justify-end">
-          <DialogFooter>
+          <DialogFooter className="flex flex-row max-sm:gap-2">
             <DialogClose asChild>
               <Button variant={"outline"}>Annuler</Button>
             </DialogClose>

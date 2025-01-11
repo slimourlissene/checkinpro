@@ -66,11 +66,11 @@ export default function WorkerList<TData extends User, TValue>({
 
   return (
     <div>
-      <div className="flex flex-row justify-between">
+      <div className="flex sm:flex-row flex-col justify-between">
         <SearchEmail table={table} />
-        <div className="flex flex-row gap-3 items-center mb-2">
+        <div className="flex sm:flex-row flex-col gap-2 items-center mb-2">
           <div
-            className={`transition-opacity duration-150 ${
+            className={`w-full transition-opacity duration-150 ${
               table.getSelectedRowModel().rows.length > 0
                 ? "opacity-100"
                 : "opacity-0 pointer-events-none"
@@ -116,7 +116,7 @@ export default function WorkerList<TData extends User, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell className="" key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -174,7 +174,7 @@ function SearchEmail<TData>({
   return (
     <div className="mb-3">
       <Input
-        className="max-w-xs"
+        className="w-full"
         icon={<Search size={16} />}
         placeholder="Rechercher"
         value={table.getState().globalFilter ?? ""}

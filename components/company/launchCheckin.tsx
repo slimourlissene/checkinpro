@@ -14,9 +14,12 @@ import { useState } from "react";
 import Image from "next/image";
 import LoadingSpinner from "../ui/loading-spinner";
 import { resolveActionResult } from "@/utils/next-safe-action/resolveActionResult";
+import { useRouter } from "next/navigation";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export default function LaunchCheckin({ id }: { id: string }) {
   const [qrCode, setQrCode] = useState<string | null>(null);
+  const router: AppRouterInstance = useRouter();
 
   async function onClick() {
     const result = await resolveActionResult(launchCheckin({ id }));

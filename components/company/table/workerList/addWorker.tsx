@@ -34,9 +34,12 @@ export default function AddWorker({ id }: { id: string }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={"outline"}> Ajouter des employés </Button>
+        <Button className="sm:w-[300px] w-full" variant={"outline"}>
+          {" "}
+          Ajouter des employés{" "}
+        </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-3xl">
+      <DialogContent className="sm:max-w-3xl max-w-[95%] rounded-lg">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold">
             Ajouter des employés
@@ -91,9 +94,12 @@ function AddWorkerForm({
         className="space-y-4"
       >
         <ScrollArea className="h-56">
-          <div className="space-y-2 p-4">
+          <div className="w-full space-y-2 p-4">
             {fields.map((field, index) => (
-              <div key={field.id} className="flex flex-row items-center gap-3">
+              <div
+                key={field.id}
+                className="w-full flex flex-row items-center gap-3"
+              >
                 <FormField
                   control={form.control}
                   name={`workers.${index}.firstname`}
@@ -140,7 +146,7 @@ function AddWorkerForm({
                     </FormItem>
                   )}
                 />
-                <div className={`flex flex-row gap-3 w-[60px] items-center`}>
+                <div className={`flex flex-row w-[125px] gap-3 items-center`}>
                   {fields.length > 1 && (
                     <MinusCircle
                       className="cursor-pointer hover:text-muted-foreground transition-colors"
@@ -160,7 +166,7 @@ function AddWorkerForm({
             ))}
           </div>
         </ScrollArea>
-        <DialogFooter>
+        <DialogFooter className="flex sm:flex-row flex-col gap-2">
           <DialogClose asChild>
             <Button type="button" variant={"outline"}>
               Annuler
@@ -182,7 +188,7 @@ function AddWorkerForm({
               onFileChange({ event, append, remove })
             }
           />
-          <Button loading={loading} className="w-[100px]" type="submit">
+          <Button loading={loading} className="sm:w-[100px]" type="submit">
             Ajouter
           </Button>
         </DialogFooter>

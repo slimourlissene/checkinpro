@@ -20,7 +20,6 @@ import LoadingSpinner from "../ui/loading-spinner";
 
 export default function Logout() {
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   async function handleLogout() {
     setLoading(true);

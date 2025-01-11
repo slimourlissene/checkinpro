@@ -19,30 +19,31 @@ export default async function Company({ params }: { params: { id: string } }) {
   const checkins = await resolveActionResult(getCheckinsByCompany());
 
   return (
-    <div className="flex flex-col w-full gap-8 p-4">
-      <div>
-        <Accordion type="single" collapsible className="w-full">
-          <AccordionItem value="workers">
-            <AccordionTrigger>Liste des employés</AccordionTrigger>
-            <AccordionContent>
-              <WorkerList
-                id={company.id}
-                columns={columns}
-                data={company.users}
-              />
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="checkin">
-            <AccordionTrigger>Liste des émargements</AccordionTrigger>
-            <AccordionContent className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
-              {checkins.map((checkin: ICheckinByCompany, key: Key) => (
-                <ManageCheckinCard checkin={checkin} key={key} />
-              ))}
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </div>
-      <div></div>
+    <div className="flex flex-col gap-8 p-4">
+      <Accordion type="single" collapsible>
+        <AccordionItem value="workers" className="max-w-full">
+          <AccordionTrigger className="max-w-full text-left">
+            <div className="truncate">Liste des employés</div>
+          </AccordionTrigger>
+          <AccordionContent>
+            <WorkerList
+              id={company.id}
+              columns={columns}
+              data={company.users}
+            />
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="checkin" className="max-w-full">
+          <AccordionTrigger className="max-w-full text-left">
+            <div className="truncate">Liste des émargements</div>
+          </AccordionTrigger>
+          <AccordionContent className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
+            {checkins.map((checkin: ICheckinByCompany, key: Key) => (
+              <ManageCheckinCard checkin={checkin} key={key} />
+            ))}
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div>
   );
 }
