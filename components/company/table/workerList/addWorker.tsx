@@ -96,7 +96,7 @@ function AddWorkerForm({
               <div key={field.id} className="flex flex-row items-center gap-3">
                 <FormField
                   control={form.control}
-                  name={`workers.${index}.email`}
+                  name={`workers.${index}.firstname`}
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
@@ -113,7 +113,7 @@ function AddWorkerForm({
                 />
                 <FormField
                   control={form.control}
-                  name={`workers.${index}.email`}
+                  name={`workers.${index}.lastname`}
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
@@ -182,8 +182,8 @@ function AddWorkerForm({
               onFileChange({ event, append, remove })
             }
           />
-          <Button className="w-[100px]" type="submit">
-            {loading ? <LoadingSpinner /> : "Ajouter"}
+          <Button loading={loading} className="w-[100px]" type="submit">
+            Ajouter
           </Button>
         </DialogFooter>
       </form>

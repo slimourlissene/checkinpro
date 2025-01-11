@@ -135,8 +135,8 @@ function ModifyWorkerForm({
             <DialogClose asChild>
               <Button variant={"outline"}>Annuler</Button>
             </DialogClose>
-            <Button className="w-[100px]">
-              {loading ? <LoadingSpinner /> : "Modifier"}
+            <Button loading={loading} className="w-[100px]">
+              Modifier
             </Button>
           </DialogFooter>
         </div>

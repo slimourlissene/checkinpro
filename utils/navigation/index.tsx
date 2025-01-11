@@ -2,15 +2,13 @@ import Login from "@/components/auth/login";
 import CreateCheckin from "@/components/checkin/createCheckin";
 import ScanQRCode from "@/components/checkin/scanQRCode";
 import { ToggleTheme } from "@/components/navigation/toggleTheme";
-import { ISidebarItem } from "@/types";
+import { ISidebarItem, IUserWithCompany } from "@/types";
 import {
   BookOpen,
   CircleHelp,
-  CirclePlus,
   Cookie,
   Handshake,
   Home,
-  PlusCircle,
   QrCode,
   Scale,
   Send,
@@ -51,20 +49,35 @@ export function computeSidebarGeneralItems({
   ];
 }
 
-export function computeSidebarCheckInItems(): ISidebarItem[] {
-  return [
-    {
-      component: <CreateCheckin />,
-    },
-    {
-      component: <ScanQRCode />,
-    },
-    {
-      title: "Mes émargements",
-      url: "/checkin",
-      icon: QrCode,
-    },
-  ];
+export function computeSidebarCheckInItems({
+  user,
+}: {
+  user: IUserWithCompany;
+}): ISidebarItem[] {
+  return user?.isChief === true
+    ? [
+        {
+          component: <CreateCheckin />,
+        },
+        {
+          component: <ScanQRCode />,
+        },
+        {
+          title: "Mes émargements",
+          url: "/checkin",
+          icon: QrCode,
+        },
+      ]
+    : [
+        {
+          component: <ScanQRCode />,
+        },
+        {
+          title: "Mes émargements",
+          url: "/checkin",
+          icon: QrCode,
+        },
+      ];
 }
 
 export function computeSidebarLegalItems(): ISidebarItem[] {

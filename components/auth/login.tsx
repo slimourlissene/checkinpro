@@ -53,7 +53,7 @@ export default function Login() {
 }
 
 function LoginForm({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const loginSchema = z.object({
     email: z.string().email({
@@ -73,7 +73,7 @@ function LoginForm({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
   });
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
-    setIsLoading(true);
+    setLoading(true);
     try {
       const result = await signIn("credentials", {
         email: values.email,
@@ -92,7 +92,7 @@ function LoginForm({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
       console.error(error);
       toast.error("Une erreur est survenue lors de la connexion.");
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   }
 
@@ -137,8 +137,8 @@ function LoginForm({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
           >
             Annuler
           </Button>
-          <Button className="w-[125px]" type="submit" disabled={isLoading}>
-            {isLoading ? <LoadingSpinner /> : "Se connecter"}
+          <Button loading={loading} className="w-[125px]" type="submit">
+            Se connecter
           </Button>
         </div>
       </form>

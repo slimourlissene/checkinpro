@@ -5,7 +5,7 @@ import { CheckInSidebar } from "./checkInSidebar";
 import { LegalSidebar } from "./legalSidebar";
 import { UserSidebar } from "./userSidebar";
 import { Sidebar, SidebarContent, SidebarFooter } from "../ui/sidebar";
-import { ISidebarItem, IUser } from "@/types";
+import { ISidebarItem, IUserWithCompany } from "@/types";
 import { CompanyHeader } from "./companyHeader";
 import {
   computeSidebarCheckInItems,
@@ -16,10 +16,12 @@ import {
 export default function AppSidebar({
   user,
   ...props
-}: { user: IUser | undefined } & React.ComponentProps<typeof Sidebar>) {
+}: { user: IUserWithCompany | undefined } & React.ComponentProps<
+  typeof Sidebar
+>) {
   const navMainItems: ISidebarItem[] = computeSidebarGeneralItems({ user });
   const navCheckInItems: ISidebarItem[] = user
-    ? computeSidebarCheckInItems()
+    ? computeSidebarCheckInItems({ user })
     : [];
   const navLegalItems: ISidebarItem[] = computeSidebarLegalItems();
 

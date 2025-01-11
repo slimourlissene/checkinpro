@@ -61,6 +61,7 @@ export default function DeleteWorker({
             <Button variant="outline">Annuler</Button>
           </DialogClose>
           <Button
+            loading={loading}
             className="w-[100px]"
             onClick={() =>
               onClick({ emails, router, setOpen, setLoading }).then(() => {
@@ -70,7 +71,7 @@ export default function DeleteWorker({
             }
             variant="destructive"
           >
-            {loading ? <LoadingSpinner /> : "Supprimer"}
+            Supprimer
           </Button>
         </DialogFooter>
       </DialogContent>

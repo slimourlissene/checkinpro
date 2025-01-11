@@ -6,9 +6,15 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 const addWorkerSchema = z.object({
   workers: z.array(
     z.object({
-      firstname: z.string(),
-      lastname: z.string(),
-      email: z.string().email(),
+      firstname: z.string().min(1, {
+        message: "Veuillez entrer le prénom de l'employé",
+      }),
+      lastname: z.string().min(1, {
+        message: "Veuillez entrer le nom de famille de l'employé",
+      }),
+      email: z.string().email({
+        message: "Veuillez entrer une adresse email valide",
+      }),
     })
   ),
 });

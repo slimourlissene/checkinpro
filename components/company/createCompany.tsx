@@ -98,8 +98,8 @@ function CreateCompanyForm({ setOpen }: { setOpen: (open: boolean) => void }) {
           )}
         />
         <div className="w-full flex flex-row justify-end">
-          <Button className="w-[150px]" type="submit">
-            {loading ? <LoadingSpinner /> : "Créer l'entreprise"}
+          <Button loading={loading} className="w-[150px]" type="submit">
+            Créer l'entreprise
           </Button>
         </div>
       </form>

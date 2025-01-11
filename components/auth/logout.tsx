@@ -19,24 +19,22 @@ import { Button } from "../ui/button";
 import LoadingSpinner from "../ui/loading-spinner";
 
 export default function Logout() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   async function handleLogout() {
-    setIsLoading(true);
+    setLoading(true);
     try {
       await signOut({
-        redirect: false,
+        redirect: true,
+        redirectTo: "/",
       });
       toast.success("Vous allez être déconnecté dans un instant.");
-      setTimeout(() => {
-        router.refresh();
-      }, 1000);
     } catch (error) {
       toast.error("Une erreur est survenue lors de la connexion.");
       console.error(error);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   }
 
@@ -68,11 +66,12 @@ export default function Logout() {
           </AlertDialogCancel>
           <AlertDialogAction asChild>
             <Button
-              className="w-[125px]"
+              loading={loading}
+              className="w-[150px]"
               variant={"destructive"}
               onClick={() => handleLogout()}
             >
-              {isLoading ? <LoadingSpinner /> : "Se déconnecter"}
+              Se déconnecter
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>
