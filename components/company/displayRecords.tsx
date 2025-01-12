@@ -32,7 +32,7 @@ export default function DisplayRecords({
           Voir les enregistrements
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[80%]">
+      <DialogContent className="sm:max-w-3xl max-w-[95%] rounded-lg">
         <DialogHeader>
           <DialogTitle> Voir les enregistrements </DialogTitle>
           <DialogDescription>
@@ -40,7 +40,7 @@ export default function DisplayRecords({
             session d&apos;émargement est enregistrée et listée ci-dessous.
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea>
+        <ScrollArea className="max-h-[450px] p-4">
           <Accordion type="single" collapsible>
             {checkinSessions.map(
               (checkinSession: ICheckinSessionWithRecords, key: Key) =>

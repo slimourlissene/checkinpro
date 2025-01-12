@@ -33,7 +33,7 @@ export default function LaunchCheckin({ id }: { id: string }) {
           Lancer l&apos;émargement
         </Button>
       </DialogTrigger>
-      <DialogContent className="min-h-[450px]">
+      <DialogContent className="min-h-[450px] sm:max-w-2xl max-w-[95%] rounded-lg">
         <DialogHeader>
           <DialogTitle>Émargement lancé avec succès !</DialogTitle>
           <DialogDescription>

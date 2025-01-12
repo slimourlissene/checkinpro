@@ -82,7 +82,7 @@ export const createRecord = safeAuthenticatedAction
         },
       });
       if (existingRecord) {
-        throw new ActionError("Enregistrement déjà existant");
+        throw new ActionError("Vous avez déjà émargé pour cette session");
       }
 
       return await prisma.record.create({
@@ -91,10 +91,8 @@ export const createRecord = safeAuthenticatedAction
           userId: user.id,
         },
       });
-    } catch (error: unknown) {
+    } catch (error: any) {
       console.error(error);
-      throw new ActionError("Erreur lors de la création de l'enregistrement", {
-        cause: error,
-      });
+      throw new ActionError(error);
     }
   });

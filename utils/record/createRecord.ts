@@ -1,15 +1,14 @@
 import { createRecord } from "@/services/record";
 import { IDetectedBarcode } from "@yudiel/react-qr-scanner";
 import { toast } from "sonner";
-import { sleep } from "../other/sleep";
+import { resolveActionResult } from "../next-safe-action/resolveActionResult";
 
 export async function onScan({ data }: { data: IDetectedBarcode[] }) {
   try {
-    await createRecord({ token: data[0].rawValue });
-    alert(JSON.stringify(data));
+    await resolveActionResult(createRecord({ token: data[0].rawValue }));
     toast.success("Vous avez été émargé avec succès.");
-  } catch (error: unknown) {
+  } catch (error: any) {
     console.error(error);
-    toast.error("Une erreur s'est produite lors de l'émargement.");
+    toast.error(error);
   }
 }

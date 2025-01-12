@@ -52,7 +52,7 @@ export default function CreateCompanyDialog() {
           </SidebarMenuButton>
         </SidebarMenuItem>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[475px] max-w-[95%] rounded-lg">
         <DialogHeader>
           <DialogTitle> Créer une entreprise </DialogTitle>
           <DialogDescription>

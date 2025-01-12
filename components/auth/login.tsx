@@ -39,7 +39,7 @@ export default function Login() {
           <span>Se connecter</span>
         </SidebarMenuButton>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[475px]">
+      <DialogContent className="sm:max-w-[475px] max-w-[95%] rounded-lg">
         <DialogHeader>
           <DialogTitle>Se connecter</DialogTitle>
           <DialogDescription>
@@ -78,13 +78,12 @@ function LoginForm({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
       const result = await signIn("credentials", {
         email: values.email,
         password: values.password,
-        redirect: false,
+        redirect: true,
+        redirectTo: "/",
       });
 
       if (!result?.error) {
         setIsOpen(false);
-        toast.success("Vous êtes désormais connecté.");
-        router.refresh();
       } else {
         throw new Error(result.error);
       }

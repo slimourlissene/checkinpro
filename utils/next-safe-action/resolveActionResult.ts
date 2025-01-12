@@ -1,5 +1,6 @@
 import { SafeActionResult } from "next-safe-action";
 import { z } from "zod";
+import { isActionSuccessful } from "./isActionSuccessful";
 
 /**
  * Convert an action result to a promise that resolves to the parsed data
@@ -17,10 +18,10 @@ export const resolveActionResult = async <
   return new Promise((resolve, reject) => {
     action
       .then((result) => {
-        if (result?.data) {
+        if (isActionSuccessful(result)) {
           resolve(result.data);
         } else {
-          resolve(null);
+          reject(result?.serverError ?? "Something went wrong");
         }
       })
       .catch((error) => {

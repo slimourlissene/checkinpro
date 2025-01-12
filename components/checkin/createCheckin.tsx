@@ -45,7 +45,7 @@ export default function CreateCheckin() {
           Créer un émargement
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[475px] max-w-[350px] rounded-lg">
         <DialogHeader>
           <DialogTitle>Créer un émargement</DialogTitle>
           <DialogDescription>
@@ -139,11 +139,11 @@ function CreateCheckinForm({ setOpen }: { setOpen: (open: boolean) => void }) {
             </FormItem>
           )}
         />
-        <DialogFooter className="mt-2">
+        <DialogFooter className="flex sm:flex-row flex-col-reverse gap-2 mt-2">
           <DialogClose asChild>
             <Button variant={"outline"}>Annuler</Button>
           </DialogClose>
-          <Button loading={loading} type="submit" className="w-[160px]">
+          <Button loading={loading} type="submit" className="sm:w-[175px]">
             Créer l'émargement
           </Button>
         </DialogFooter>

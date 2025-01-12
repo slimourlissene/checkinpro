@@ -42,12 +42,7 @@ export const columns: ColumnDef<User>[] = [
   {
     id: "firstname",
     accessorKey: "firstname",
-    header: () => <span className="max-sm:hidden">Prénom</span>,
-    cell: ({ row }) => {
-      return (
-        <span className="max-sm:hidden p-0"> {row.getValue("firstname")} </span>
-      );
-    },
+    header: "Prénom",
   },
   {
     accessorKey: "lastname",

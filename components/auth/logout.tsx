@@ -28,7 +28,6 @@ export default function Logout() {
         redirect: true,
         redirectTo: "/",
       });
-      toast.success("Vous allez être déconnecté dans un instant.");
     } catch (error) {
       toast.error("Une erreur est survenue lors de la connexion.");
       console.error(error);
@@ -49,7 +48,7 @@ export default function Logout() {
           Se déconnecter
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent className="sm:max-w-[400px] max-w-[95%] rounded-lg">
         <AlertDialogHeader>
           <AlertDialogTitle>
             Êtes-vous sûr de vouloir vous déconnecter ?
@@ -66,7 +65,7 @@ export default function Logout() {
           <AlertDialogAction asChild>
             <Button
               loading={loading}
-              className="w-[150px]"
+              className="sm:w-[150px]"
               variant={"destructive"}
               onClick={() => handleLogout()}
             >

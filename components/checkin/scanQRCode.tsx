@@ -35,7 +35,7 @@ export default function ScanQRCode() {
           Scanner un QR Code
         </Button>
       </DialogTrigger>
-      <DialogContent className="rounded-lg">
+      <DialogContent className="sm:max-w-[475px] max-w-[95%] rounded-lg">
         <div>
           <DialogHeader className="mb-5">
             <DialogTitle>Veuillez scanner le QR Code</DialogTitle>
